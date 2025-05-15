@@ -17,6 +17,9 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
+
+    - name: Install Identity UI package
+      run: dotnet add ./WorkshopManager/WorkshopManager.csproj package Microsoft.AspNetCore.Identity.UI --version 8.0.5
         
     - name: Restore dependencies
       run: dotnet restore ./WorkshopManager/WorkshopManager.sln
