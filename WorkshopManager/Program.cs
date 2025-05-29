@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WorkshopManager.Data;
+using WorkshopManager.Mappers;
 using WorkshopManager.Models;
+using WorkshopManager.Services.Interfaces;
+using WorkshopManager.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +30,15 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders()
     .AddDefaultUI();
+
+// Rejestracja maperów Mapperly
+builder.Services.AddScoped<CustomerMapper>();
+builder.Services.AddScoped<VehicleMapper>();
+builder.Services.AddScoped<ServiceOrderMapper>();
+builder.Services.AddScoped<ServiceTaskMapper>();
+builder.Services.AddScoped<PartMapper>();
+builder.Services.AddScoped<UsedPartMapper>();
+builder.Services.AddScoped<CommentMapper>();
 
 var app = builder.Build();
 
