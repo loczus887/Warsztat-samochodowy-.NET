@@ -7,11 +7,11 @@ public class ServiceOrderDto
 {
     public int Id { get; set; }
 
-    [DataType(DataType.DateTime)]
+    [DataType(DataType.Date)]
     [Display(Name = "Data utworzenia")]
     public DateTime CreatedAt { get; set; }
 
-    [DataType(DataType.DateTime)]
+    [DataType(DataType.Date)]
     [Display(Name = "Data zakończenia")]
     public DateTime? CompletedAt { get; set; }
 
@@ -44,6 +44,5 @@ public class ServiceOrderDto
     public int TaskCount { get; set; }
 
     [Display(Name = "Koszt całkowity")]
-    [DataType(DataType.Currency)]
     public decimal TotalCost { get; set; }
 }

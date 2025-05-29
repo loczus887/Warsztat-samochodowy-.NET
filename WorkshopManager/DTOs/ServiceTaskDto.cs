@@ -14,7 +14,6 @@ public class ServiceTaskDto
     [Required(ErrorMessage = "Koszt robocizny jest wymagany")]
     [Range(0, 100000, ErrorMessage = "Koszt musi być między 0 a 100000")]
     [Display(Name = "Koszt robocizny (zł)")]
-    [DataType(DataType.Currency)]
     public decimal LaborCost { get; set; }
 
     [Required]
@@ -25,10 +24,8 @@ public class ServiceTaskDto
     public int PartsCount { get; set; }
 
     [Display(Name = "Koszt części (zł)")]
-    [DataType(DataType.Currency)]
     public decimal PartsCost { get; set; }
 
     [Display(Name = "Koszt całkowity (zł)")]
-    [DataType(DataType.Currency)]
     public decimal TotalCost { get; set; }
 }
