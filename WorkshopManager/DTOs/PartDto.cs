@@ -18,7 +18,6 @@ public class PartDto
     [Required(ErrorMessage = "Cena jednostkowa jest wymagana")]
     [Range(0, 100000, ErrorMessage = "Cena musi być między 0 a 100000")]
     [Display(Name = "Cena jednostkowa (zł)")]
-    [DataType(DataType.Currency)]
     public decimal UnitPrice { get; set; }
 
     // Właściwość tylko do odczytu
