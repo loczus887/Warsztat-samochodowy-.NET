@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|c:\\users\\bea_l\\desktop\\warsztat-samochodowy-.net\\workshopmanager\\controllers\\commentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:controllers\\commentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|c:\\users\\bea_l\\desktop\\warsztat-samochodowy-.net\\workshopmanager\\dtos\\usedpartdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:dtos\\usedpartdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|c:\\users\\bea_l\\desktop\\warsztat-samochodowy-.net\\workshopmanager\\services\\serviceorderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:services\\serviceorderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -70,11 +78,37 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CommentsController.cs",
+              "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Controllers\\CommentsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CommentsController.cs",
+              "ToolTip": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Controllers\\CommentsController.cs",
+              "RelativeToolTip": "Controllers\\CommentsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-30T18:34:58.687Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "UsedPartDto.cs",
+              "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\DTOs\\UsedPartDto.cs",
+              "RelativeDocumentMoniker": "DTOs\\UsedPartDto.cs",
+              "ToolTip": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\DTOs\\UsedPartDto.cs",
+              "RelativeToolTip": "DTOs\\UsedPartDto.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAAB0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-30T18:34:12.601Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -82,12 +116,11 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAABAAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T21:08:25.831Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T21:08:25.831Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "ServiceOrderService.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Services\\ServiceOrderService.cs",
               "RelativeDocumentMoniker": "Services\\ServiceOrderService.cs",
@@ -100,7 +133,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "IServiceOrderService.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Services\\Interfaces\\IServiceOrderService.cs",
               "RelativeDocumentMoniker": "Services\\Interfaces\\IServiceOrderService.cs",
@@ -108,12 +141,11 @@
               "RelativeToolTip": "Services\\Interfaces\\IServiceOrderService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T20:58:06.273Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T20:58:06.273Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "ServiceTasksController.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Controllers\\ServiceTasksController.cs",
               "RelativeDocumentMoniker": "Controllers\\ServiceTasksController.cs",
@@ -121,12 +153,11 @@
               "RelativeToolTip": "Controllers\\ServiceTasksController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAH8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T20:49:23.069Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T20:49:23.069Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "ServiceOrdersController.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Controllers\\ServiceOrdersController.cs",
               "RelativeDocumentMoniker": "Controllers\\ServiceOrdersController.cs",
@@ -134,12 +165,11 @@
               "RelativeToolTip": "Controllers\\ServiceOrdersController.cs",
               "ViewState": "AgIAABAAAAAAAAAAAAAwwBUAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T20:48:44.433Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T20:48:44.433Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "CommentDto.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\DTOs\\CommentDto.cs",
               "RelativeDocumentMoniker": "DTOs\\CommentDto.cs",
@@ -147,12 +177,11 @@
               "RelativeToolTip": "DTOs\\CommentDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T20:47:54.265Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T20:47:54.265Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "ServiceTaskDto.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\DTOs\\ServiceTaskDto.cs",
               "RelativeDocumentMoniker": "DTOs\\ServiceTaskDto.cs",
@@ -160,12 +189,11 @@
               "RelativeToolTip": "DTOs\\ServiceTaskDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T20:46:46.809Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T20:46:46.809Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "ServiceOrderDto.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\DTOs\\ServiceOrderDto.cs",
               "RelativeDocumentMoniker": "DTOs\\ServiceOrderDto.cs",
@@ -173,12 +201,11 @@
               "RelativeToolTip": "DTOs\\ServiceOrderDto.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAA5wC8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T20:42:10.258Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T20:42:10.258Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "VehiclesController.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Controllers\\VehiclesController.cs",
               "RelativeDocumentMoniker": "Controllers\\VehiclesController.cs",
@@ -186,12 +213,11 @@
               "RelativeToolTip": "Controllers\\VehiclesController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAMUAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T20:36:23.995Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T20:36:23.995Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "CommentMapper.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Mappers\\CommentMapper.cs",
               "RelativeDocumentMoniker": "Mappers\\CommentMapper.cs",
@@ -199,12 +225,11 @@
               "RelativeToolTip": "Mappers\\CommentMapper.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAcwAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T12:15:18.047Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T12:15:18.047Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "UsedPartMapper.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Mappers\\UsedPartMapper.cs",
               "RelativeDocumentMoniker": "Mappers\\UsedPartMapper.cs",
@@ -216,7 +241,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 14,
               "Title": "PartMapper.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Mappers\\PartMapper.cs",
               "RelativeDocumentMoniker": "Mappers\\PartMapper.cs",
@@ -228,7 +253,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 15,
               "Title": "ServiceTaskMapper.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Mappers\\ServiceTaskMapper.cs",
               "RelativeDocumentMoniker": "Mappers\\ServiceTaskMapper.cs",
@@ -240,7 +265,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "ServiceOrderMapper.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Mappers\\ServiceOrderMapper.cs",
               "RelativeDocumentMoniker": "Mappers\\ServiceOrderMapper.cs",
@@ -252,7 +277,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 16,
               "Title": "VehicleMapper.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Mappers\\VehicleMapper.cs",
               "RelativeDocumentMoniker": "Mappers\\VehicleMapper.cs",

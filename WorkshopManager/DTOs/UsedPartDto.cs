@@ -23,10 +23,8 @@ public class UsedPartDto
     public string? PartName { get; set; }
 
     [Display(Name = "Cena jednostkowa")]
-    [DataType(DataType.Currency)]
     public decimal UnitPrice { get; set; }
 
     [Display(Name = "Wartość")]
-    [DataType(DataType.Currency)]
     public decimal TotalPrice { get; set; }
 }

@@ -82,8 +82,7 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAABAAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T21:08:25.831Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T21:08:25.831Z"
             },
             {
               "$type": "Document",
@@ -91,9 +90,9 @@
               "Title": "ServiceOrderService.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Services\\ServiceOrderService.cs",
               "RelativeDocumentMoniker": "Services\\ServiceOrderService.cs",
-              "ToolTip": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Services\\ServiceOrderService.cs*",
-              "RelativeToolTip": "Services\\ServiceOrderService.cs*",
-              "ViewState": "AgIAAIQAAAAAAAAAAAAQwJsAAAABAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Services\\ServiceOrderService.cs",
+              "RelativeToolTip": "Services\\ServiceOrderService.cs",
+              "ViewState": "AgIAAIUAAAAAAAAAAAAQwJUAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-29T21:04:44.156Z",
               "EditorCaption": ""
@@ -108,8 +107,7 @@
               "RelativeToolTip": "Services\\Interfaces\\IServiceOrderService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T20:58:06.273Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T20:58:06.273Z"
             },
             {
               "$type": "Document",
@@ -121,8 +119,7 @@
               "RelativeToolTip": "Controllers\\ServiceTasksController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAH8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T20:49:23.069Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T20:49:23.069Z"
             },
             {
               "$type": "Document",
@@ -134,8 +131,7 @@
               "RelativeToolTip": "Controllers\\ServiceOrdersController.cs",
               "ViewState": "AgIAABAAAAAAAAAAAAAwwBUAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T20:48:44.433Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T20:48:44.433Z"
             },
             {
               "$type": "Document",
@@ -147,8 +143,7 @@
               "RelativeToolTip": "DTOs\\CommentDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T20:47:54.265Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T20:47:54.265Z"
             },
             {
               "$type": "Document",
@@ -160,8 +155,7 @@
               "RelativeToolTip": "DTOs\\ServiceTaskDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T20:46:46.809Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T20:46:46.809Z"
             },
             {
               "$type": "Document",
@@ -173,8 +167,7 @@
               "RelativeToolTip": "DTOs\\ServiceOrderDto.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAA5wC8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T20:42:10.258Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T20:42:10.258Z"
             },
             {
               "$type": "Document",
@@ -186,8 +179,7 @@
               "RelativeToolTip": "Controllers\\VehiclesController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAMUAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T20:36:23.995Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T20:36:23.995Z"
             },
             {
               "$type": "Document",
@@ -199,8 +191,7 @@
               "RelativeToolTip": "Mappers\\CommentMapper.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAcwAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-29T12:15:18.047Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-29T12:15:18.047Z"
             },
             {
               "$type": "Document",
