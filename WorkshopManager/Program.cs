@@ -5,6 +5,7 @@ using WorkshopManager.Mappers;
 using WorkshopManager.Models;
 using WorkshopManager.Services.Interfaces;
 using WorkshopManager.Services;
+using WorkshopManager.BackgroundServices;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +42,8 @@ builder.Services.AddScoped<ServiceTaskMapper>();
 builder.Services.AddScoped<PartMapper>();
 builder.Services.AddScoped<UsedPartMapper>();
 builder.Services.AddScoped<CommentMapper>();
+
+builder.Services.AddHostedService<DailyReportBackgroundService>();
 
 var app = builder.Build();
 
