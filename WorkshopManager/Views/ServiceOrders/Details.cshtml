@@ -1,0 +1,169 @@
+﻿@model WorkshopManager.DTOs.ServiceOrderDto
+
+@{
+    ViewData["Title"] = "Szczegóły zlecenia";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Zlecenie #@Model.Id</h4>
+                <div>
+                    @switch (Model.Status.ToString())
+                    {
+                        case "New":
+                            <span class="badge bg-warning fs-6">Nowe</span>
+                            break;
+                        case "InProgress":
+                            <span class="badge bg-info fs-6">W trakcie</span>
+                            break;
+                        case "Completed":
+                            <span class="badge bg-success fs-6">Ukończone</span>
+                            break;
+                        case "Cancelled":
+                            <span class="badge bg-danger fs-6">Anulowane</span>
+                            break;
+                    }
+                </div>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Data utworzenia:</dt>
+                    <dd class="col-sm-9">@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                    @if (Model.CompletedAt.HasValue)
+                    {
+                        <dt class="col-sm-3">Data zakończenia:</dt>
+                        <dd class="col-sm-9">@Model.CompletedAt.Value.ToString("dd.MM.yyyy HH:mm")</dd>
+                    }
+
+                    <dt class="col-sm-3">Pojazd:</dt>
+                    <dd class="col-sm-9">@Model.VehicleInfo</dd>
+
+                    <dt class="col-sm-3">Klient:</dt>
+                    <dd class="col-sm-9">@Model.CustomerName</dd>
+
+                    <dt class="col-sm-3">Mechanik:</dt>
+                    <dd class="col-sm-9">@(Model.MechanicName ?? "Nieprzypisany")</dd>
+
+                    <dt class="col-sm-3">Opis problemu:</dt>
+                    <dd class="col-sm-9">@Model.Description</dd>
+
+                    <dt class="col-sm-3">Koszt całkowity:</dt>
+                    <dd class="col-sm-9"><strong>@Model.TotalCost.ToString("C")</strong></dd>
+                </dl>
+
+                <!-- Akcje zmiany statusu -->
+                @if (User.IsInRole("Admin") || User.IsInRole("Mechanic"))
+                {
+                    <div class="mt-4">
+                        <h6>Zmiana statusu:</h6>
+                        <form asp-action="UpdateStatus" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            @if (Model.Status == WorkshopManager.Models.OrderStatus.New)
+                            {
+                                <button type="submit" name="newStatus" value="InProgress" class="btn btn-info btn-sm me-2">
+                                    <i class="fas fa-play"></i> Rozpocznij prace
+                                </button>
+                            }
+                            @if (Model.Status == WorkshopManager.Models.OrderStatus.InProgress)
+                            {
+                                <button type="submit" name="newStatus" value="Completed" class="btn btn-success btn-sm me-2">
+                                    <i class="fas fa-check"></i> Zakończ
+                                </button>
+                            }
+                            @if (Model.Status != WorkshopManager.Models.OrderStatus.Cancelled)
+                            {
+                                <button type="submit" name="newStatus" value="Cancelled" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-times"></i> Anuluj
+                                </button>
+                            }
+                        </form>
+                    </div>
+                }
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Powrót do listy
+                    </a>
+                    <div>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Mechanic"))
+                        {
+                            <a asp-controller="ServiceTasks" asp-action="Create" asp-route-orderId="@Model.Id"
+                               class="btn btn-primary me-2">
+                                <i class="fas fa-plus"></i> Dodaj zadanie
+                            </a>
+                        }
+                        @if (User.IsInRole("Admin") || User.IsInRole("Receptionist"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                                <i class="fas fa-edit"></i> Edytuj
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sekcja zadań -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">Zadania serwisowe</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.TaskCount > 0)
+                {
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        Zadania będą wyświetlane tutaj (wymaga pełnej implementacji ServiceTasks).
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-3">
+                        <i class="fas fa-tasks fa-2x text-muted mb-2"></i>
+                        <p class="text-muted">Brak zadań serwisowych</p>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Mechanic"))
+                        {
+                            <a asp-controller="ServiceTasks" asp-action="Create" asp-route-orderId="@Model.Id"
+                               class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus"></i> Dodaj pierwsze zadanie
+                            </a>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel komentarzy -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Komentarze</h5>
+            </div>
+            <div class="card-body">
+                <!-- Formularz dodawania komentarza -->
+                <form asp-controller="Comments" asp-action="Create" class="mb-3">
+                    <input type="hidden" name="ServiceOrderId" value="@Model.Id" />
+                    <div class="mb-2">
+                        <textarea name="Content" class="form-control" rows="3"
+                                  placeholder="Dodaj komentarz..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-comment"></i> Dodaj komentarz
+                    </button>
+                </form>
+
+                <!-- Lista komentarzy -->
+                <div class="comments-list">
+                    <div class="text-center text-muted">
+                        <i class="fas fa-comments fa-2x mb-2"></i>
+                        <p>Komentarze będą wyświetlane tutaj</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

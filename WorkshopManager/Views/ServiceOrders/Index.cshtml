@@ -1,0 +1,113 @@
+﻿@model IEnumerable<WorkshopManager.DTOs.ServiceOrderDto>
+
+@{
+    ViewData["Title"] = "Zlecenia serwisowe";
+    var currentStatus = ViewBag.CurrentStatus;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>@ViewData["Title"]</h1>
+    @if (User.IsInRole("Admin") || User.IsInRole("Receptionist"))
+    {
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Utwórz zlecenie
+        </a>
+    }
+</div>
+
+<div class="mb-3">
+    <div class="btn-group" role="group">
+        <a asp-action="Index" class="btn @(currentStatus == null ? "btn-primary" : "btn-outline-primary")">Wszystkie</a>
+        <a asp-action="Index" asp-route-status="New" class="btn @(currentStatus?.ToString() == "New" ? "btn-warning" : "btn-outline-warning")">Nowe</a>
+        <a asp-action="Index" asp-route-status="InProgress" class="btn @(currentStatus?.ToString() == "InProgress" ? "btn-info" : "btn-outline-info")">W trakcie</a>
+        <a asp-action="Index" asp-route-status="Completed" class="btn @(currentStatus?.ToString() == "Completed" ? "btn-success" : "btn-outline-success")">Ukończone</a>
+        <a asp-action="Index" asp-route-status="Cancelled" class="btn @(currentStatus?.ToString() == "Cancelled" ? "btn-danger" : "btn-outline-danger")">Anulowane</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        @if (Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nr zlecenia</th>
+                            <th>Data utworzenia</th>
+                            <th>Pojazd</th>
+                            <th>Klient</th>
+                            <th>Mechanik</th>
+                            <th>Status</th>
+                            <th>Koszt</th>
+                            <th>Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model)
+                        {
+                            <tr>
+                                <td><strong>#@order.Id</strong></td>
+                                <td>@order.CreatedAt.ToString("dd.MM.yyyy")</td>
+                                <td>@order.VehicleInfo</td>
+                                <td>@order.CustomerName</td>
+                                <td>@(order.MechanicName ?? "Nieprzypisany")</td>
+                                <td>
+                                    @switch (order.Status.ToString())
+                                    {
+                                        case "New":
+                                            <span class="badge bg-warning">Nowe</span>
+                                            break;
+                                        case "InProgress":
+                                            <span class="badge bg-info">W trakcie</span>
+                                            break;
+                                        case "Completed":
+                                            <span class="badge bg-success">Ukończone</span>
+                                            break;
+                                        case "Cancelled":
+                                            <span class="badge bg-danger">Anulowane</span>
+                                            break;
+                                        default:
+                                            <span class="badge bg-secondary">@order.Status</span>
+                                            break;
+                                    }
+                                </td>
+                                <td>@order.TotalCost.ToString("C")</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-outline-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        @if (User.IsInRole("Admin") || User.IsInRole("Receptionist"))
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@order.Id" class="btn btn-sm btn-outline-warning">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-4">
+                <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
+                <h5>Brak zleceń</h5>
+                <p class="text-muted">
+                    @if (currentStatus != null)
+                    {
+                        <span>Nie znaleziono zleceń o statusie @currentStatus.</span>
+                    }
+                    else
+                    {
+                        <span>Nie utworzono jeszcze żadnych zleceń.</span>
+                    }
+                </p>
+            </div>
+        }
+    </div>
+</div>
