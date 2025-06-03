@@ -1,0 +1,106 @@
+﻿@model IEnumerable<WorkshopManager.DTOs.PartDto>
+
+@{
+    ViewData["Title"] = "Katalog części";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>@ViewData["Title"]</h1>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Dodaj część
+    </a>
+</div>
+
+<form asp-action="Index" method="get" class="mb-3">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" name="searchString" value="@ViewData["CurrentFilter"]"
+                       class="form-control" placeholder="Szukaj części...">
+                <button class="btn btn-outline-secondary" type="submit">
+                    <i class="fas fa-search"></i> Szukaj
+                </button>
+            </div>
+        </div>
+        @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
+        {
+            <div class="col-md-2">
+                <a asp-action="Index" class="btn btn-outline-secondary">Wyczyść</a>
+            </div>
+        }
+    </div>
+</form>
+
+<div class="card">
+    <div class="card-body">
+        @if (Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nazwa</th>
+                            <th>Kategoria</th>
+                            <th>Cena jednostkowa</th>
+                            <th>Liczba użyć</th>
+                            <th>Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var part in Model)
+                        {
+                            <tr>
+                                <td><strong>@part.Name</strong></td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(part.Category))
+                                    {
+                                        <span class="badge bg-info">@part.Category</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Brak kategorii</span>
+                                    }
+                                </td>
+                                <td>@part.UnitPrice.ToString("C")</td>
+                                <td>@part.UsageCount</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Details" asp-route-id="@part.Id"
+                                           class="btn btn-sm btn-outline-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@part.Id"
+                                           class="btn btn-sm btn-outline-warning">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@part.Id"
+                                           class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-4">
+                <i class="fas fa-cogs fa-3x text-muted mb-3"></i>
+                <h5>Brak części</h5>
+                <p class="text-muted">
+                    @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
+                    {
+                        <span>Nie znaleziono części pasujących do wyszukiwania.</span>
+                    }
+                    else
+                    {
+                        <span>Nie dodano jeszcze żadnych części do katalogu.</span>
+                    }
+                </p>
+            </div>
+        }
+    </div>
+</div>
