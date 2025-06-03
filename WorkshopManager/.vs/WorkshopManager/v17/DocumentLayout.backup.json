@@ -3,6 +3,42 @@
   "WorkspaceRootPath": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|c:\\users\\bea_l\\desktop\\warsztat-samochodowy-.net\\workshopmanager\\views\\customers\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:views\\customers\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|c:\\users\\bea_l\\desktop\\warsztat-samochodowy-.net\\workshopmanager\\views\\customers\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:views\\customers\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|c:\\users\\bea_l\\desktop\\warsztat-samochodowy-.net\\workshopmanager\\views\\customers\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:views\\customers\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|c:\\users\\bea_l\\desktop\\warsztat-samochodowy-.net\\workshopmanager\\views\\customers\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:views\\customers\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|c:\\users\\bea_l\\desktop\\warsztat-samochodowy-.net\\workshopmanager\\views\\customers\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:views\\customers\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|c:\\users\\bea_l\\desktop\\warsztat-samochodowy-.net\\workshopmanager\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|c:\\users\\bea_l\\desktop\\warsztat-samochodowy-.net\\workshopmanager\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|c:\\users\\bea_l\\desktop\\warsztat-samochodowy-.net\\workshopmanager\\controllers\\partscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:controllers\\partscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|c:\\users\\bea_l\\desktop\\warsztat-samochodowy-.net\\workshopmanager\\migrations\\yourtimestamp_addnonclusteredindexes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:migrations\\yourtimestamp_addnonclusteredindexes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|c:\\users\\bea_l\\desktop\\warsztat-samochodowy-.net\\workshopmanager\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -31,10 +67,6 @@
       "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:dtos\\partdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|c:\\users\\bea_l\\desktop\\warsztat-samochodowy-.net\\workshopmanager\\controllers\\partscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:controllers\\partscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|c:\\users\\bea_l\\desktop\\warsztat-samochodowy-.net\\workshopmanager\\controllers\\commentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B4B919C6-A290-4705-96BD-89296D5C2767}|WorkshopManager.csproj|solutionrelative:controllers\\commentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -51,6 +83,110 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Views\\Customers\\Delete.cshtml",
+              "RelativeDocumentMoniker": "Views\\Customers\\Delete.cshtml",
+              "ToolTip": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Views\\Customers\\Delete.cshtml*",
+              "RelativeToolTip": "Views\\Customers\\Delete.cshtml*",
+              "ViewState": "AgIAAAwAAAAAAAAAAAA1wC4AAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-02T21:15:32.88Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Views\\Customers\\Details.cshtml",
+              "RelativeDocumentMoniker": "Views\\Customers\\Details.cshtml",
+              "ToolTip": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Views\\Customers\\Details.cshtml*",
+              "RelativeToolTip": "Views\\Customers\\Details.cshtml*",
+              "ViewState": "AgIAACoAAAAAAAAAAAA1wEwAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-02T21:14:44.755Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Views\\Customers\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Views\\Customers\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Views\\Customers\\Edit.cshtml*",
+              "RelativeToolTip": "Views\\Customers\\Edit.cshtml*",
+              "ViewState": "AgIAACYAAAAAAAAAAAA1wEoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-02T21:13:22.038Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Views\\Customers\\Create.cshtml",
+              "RelativeDocumentMoniker": "Views\\Customers\\Create.cshtml",
+              "ToolTip": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Views\\Customers\\Create.cshtml*",
+              "RelativeToolTip": "Views\\Customers\\Create.cshtml*",
+              "ViewState": "AgIAACAAAAAAAAAAAAA1wEQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-02T21:12:49.316Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Views\\Customers\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Customers\\Index.cshtml",
+              "ToolTip": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Views\\Customers\\Index.cshtml*",
+              "RelativeToolTip": "Views\\Customers\\Index.cshtml*",
+              "ViewState": "AgIAAA0AAAAAAAAAAAA1wGIAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-02T21:12:19.612Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Controllers\\AccountController.cs*",
+              "RelativeToolTip": "Controllers\\AccountController.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T20:56:31.104Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DashboardController.cs",
+              "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Controllers\\DashboardController.cs",
+              "RelativeDocumentMoniker": "Controllers\\DashboardController.cs",
+              "ToolTip": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Controllers\\DashboardController.cs*",
+              "RelativeToolTip": "Controllers\\DashboardController.cs*",
+              "ViewState": "AgIAACsAAAAAAAAAAAAAAEwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T20:53:14.48Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "YourTimestamp_AddNonClusteredIndexes.cs",
+              "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Migrations\\YourTimestamp_AddNonClusteredIndexes.cs",
+              "RelativeDocumentMoniker": "Migrations\\YourTimestamp_AddNonClusteredIndexes.cs",
+              "ToolTip": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Migrations\\YourTimestamp_AddNonClusteredIndexes.cs",
+              "RelativeToolTip": "Migrations\\YourTimestamp_AddNonClusteredIndexes.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAAADEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T20:34:40.745Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Data\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "Data\\ApplicationDbContext.cs",
@@ -63,7 +199,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 11,
               "Title": "nlog.config",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\nlog.config",
               "RelativeDocumentMoniker": "nlog.config",
@@ -76,7 +212,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 10,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -89,7 +225,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 12,
               "Title": "DailyReportBackgroundService.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\BackgroundServices\\DailyReportBackgroundService.cs",
               "RelativeDocumentMoniker": "BackgroundServices\\DailyReportBackgroundService.cs",
@@ -102,7 +238,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 13,
               "Title": "ReportsController.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Controllers\\ReportsController.cs",
               "RelativeDocumentMoniker": "Controllers\\ReportsController.cs",
@@ -115,7 +251,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 14,
               "Title": "ReportService.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Services\\ReportService.cs",
               "RelativeDocumentMoniker": "Services\\ReportService.cs",
@@ -127,7 +263,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 15,
               "Title": "PartDto.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\DTOs\\PartDto.cs",
               "RelativeDocumentMoniker": "DTOs\\PartDto.cs",
@@ -145,13 +281,14 @@
               "RelativeDocumentMoniker": "Controllers\\PartsController.cs",
               "ToolTip": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Controllers\\PartsController.cs",
               "RelativeToolTip": "Controllers\\PartsController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T18:37:05.815Z"
+              "WhenOpened": "2025-05-30T18:37:05.815Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 16,
               "Title": "CommentsController.cs",
               "DocumentMoniker": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\Controllers\\CommentsController.cs",
               "RelativeDocumentMoniker": "Controllers\\CommentsController.cs",
