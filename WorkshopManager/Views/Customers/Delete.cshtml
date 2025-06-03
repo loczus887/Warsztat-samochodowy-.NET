@@ -1,0 +1,47 @@
+﻿@model WorkshopManager.DTOs.CustomerDto
+
+@{
+    ViewData["Title"] = "Usuń klienta";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">@ViewData["Title"]</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Czy na pewno chcesz usunąć tego klienta?
+                </div>
+
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.FirstName)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.FirstName)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.LastName)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.LastName)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.PhoneNumber)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Email)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
+                </dl>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Anuluj
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Usuń klienta
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
