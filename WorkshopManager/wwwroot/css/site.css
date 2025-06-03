@@ -1,22 +1,54 @@
-html {
-  font-size: 14px;
+/* Workshop Manager Custom Styles */
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.btn-group .btn {
+    border-radius: 0.375rem;
+    margin-right: 0.25rem;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.table th {
+    border-top: none;
+    font-weight: 600;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.badge {
+    font-size: 0.75em;
 }
 
-body {
-  margin-bottom: 60px;
+.text-truncate {
+    max-width: 200px;
+}
+
+.img-thumbnail {
+    border-radius: 0.375rem;
+}
+
+/* Dashboard cards */
+.card.bg-primary,
+.card.bg-success,
+.card.bg-info,
+.card.bg-warning,
+.card.bg-danger {
+    border: none;
+}
+
+.card-footer a {
+    text-decoration: none;
+}
+
+/* Alert improvements */
+.alert {
+    border: none;
+    border-radius: 0.5rem;
+}
+
+/* Form improvements */
+.form-control:focus,
+.form-select:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }

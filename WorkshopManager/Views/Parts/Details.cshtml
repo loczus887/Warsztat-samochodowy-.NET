@@ -1,0 +1,50 @@
+﻿@model WorkshopManager.DTOs.PartDto
+
+@{
+    ViewData["Title"] = "Szczegóły części";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">@ViewData["Title"]</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Name)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Category)</dt>
+                    <dd class="col-sm-8">
+                        @if (!string.IsNullOrEmpty(Model.Category))
+                        {
+                            <span class="badge bg-info">@Model.Category</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Brak kategorii</span>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.UnitPrice)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.UnitPrice, "{0:C}")</dd>
+
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.UsageCount)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.UsageCount)</dd>
+                </dl>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Powrót do listy
+                    </a>
+                    <div>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> Edytuj
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

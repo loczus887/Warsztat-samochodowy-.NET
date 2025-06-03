@@ -3,6 +3,58 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Workshop Manager</h1>
+    <p class="lead">Nowoczesny system zarządzania warsztatem samochodowym</p>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="mt-4">
+            <h3>Witaj, @User.Identity.Name!</h3>
+            <a class="btn btn-primary btn-lg" asp-controller="Dashboard" asp-action="Index">
+                <i class="fas fa-tachometer-alt"></i> Przejdź do pulpitu
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="mt-4">
+            <p class="mb-4">Zaloguj się, aby uzyskać dostęp do systemu zarządzania warsztatem.</p>
+            <a class="btn btn-primary btn-lg me-3" asp-area="Identity" asp-page="/Account/Login">
+                <i class="fas fa-sign-in-alt"></i> Zaloguj się
+            </a>
+            <a class="btn btn-outline-secondary btn-lg" asp-area="Identity" asp-page="/Account/Register">
+                <i class="fas fa-user-plus"></i> Zarejestruj się
+            </a>
+        </div>
+    }
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                <h5>Zarządzanie klientami</h5>
+                <p class="card-text">Dodawaj i zarządzaj danymi klientów oraz ich pojazdami.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-clipboard-list fa-3x text-success mb-3"></i>
+                <h5>Zlecenia serwisowe</h5>
+                <p class="card-text">Twórz i śledź zlecenia napraw oraz przypisuj je mechanikom.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-chart-bar fa-3x text-info mb-3"></i>
+                <h5>Raporty i analiza</h5>
+                <p class="card-text">Generuj raporty kosztów i analizuj wydajność warsztatu.</p>
+            </div>
+        </div>
+    </div>
 </div>
