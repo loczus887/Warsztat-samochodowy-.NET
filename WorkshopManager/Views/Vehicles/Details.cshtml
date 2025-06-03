@@ -1,0 +1,79 @@
+﻿@model WorkshopManager.DTOs.VehicleDto
+
+@{
+    ViewData["Title"] = "Szczegóły pojazdu";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Zdjęcie pojazdu</h5>
+            </div>
+            <div class="card-body text-center">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" alt="Zdjęcie pojazdu" class="img-fluid rounded">
+                }
+                else
+                {
+                    <div class="bg-light d-flex align-items-center justify-content-center rounded"
+                         style="height: 200px;">
+                        <i class="fas fa-car fa-3x text-muted"></i>
+                    </div>
+                    <p class="text-muted mt-2">Brak zdjęcia</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">@Model.Make @Model.Model</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Marka:</dt>
+                    <dd class="col-sm-9">@Model.Make</dd>
+
+                    <dt class="col-sm-3">Model:</dt>
+                    <dd class="col-sm-9">@Model.Model</dd>
+
+                    <dt class="col-sm-3">Rejestracja:</dt>
+                    <dd class="col-sm-9">@Model.RegistrationNumber</dd>
+
+                    <dt class="col-sm-3">Rok:</dt>
+                    <dd class="col-sm-9">@Model.Year</dd>
+
+                    @if (!string.IsNullOrEmpty(Model.VIN))
+                    {
+                        <dt class="col-sm-3">VIN:</dt>
+                        <dd class="col-sm-9">@Model.VIN</dd>
+                    }
+
+                    <dt class="col-sm-3">Właściciel:</dt>
+                    <dd class="col-sm-9">@Model.CustomerFullName</dd>
+
+                    <dt class="col-sm-3">Liczba zleceń:</dt>
+                    <dd class="col-sm-9">@Model.ServiceOrderCount</dd>
+                </dl>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Powrót do listy
+                    </a>
+                    <div>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning me-2">
+                            <i class="fas fa-edit"></i> Edytuj
+                        </a>
+                        <a asp-controller="ServiceOrders" asp-action="Create" asp-route-vehicleId="@Model.Id"
+                           class="btn btn-success">
+                            <i class="fas fa-plus"></i> Utwórz zlecenie
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
