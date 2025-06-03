@@ -1,0 +1,121 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Dashboard";
+    var userRole = ViewBag.UserRole;
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Dashboard - @userRole</h1>
+
+    <div class="row mt-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">
+                    <h2>@Model.ActiveOrdersCount</h2>
+                    <p>Aktywne zlecenia</p>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="/ServiceOrders/Index?status=InProgress">Zobacz szczegóły</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-warning text-white mb-4">
+                <div class="card-body">
+                    <h2>@Model.NewOrdersCount</h2>
+                    <p>Nowe zlecenia</p>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="/ServiceOrders/Index?status=New">Zobacz szczegóły</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">
+                    <h2>@Model.CompletedOrdersCount</h2>
+                    <p>Ukończone zlecenia</p>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="/ServiceOrders/Index?status=Completed">Zobacz szczegóły</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        @if (userRole != "Mechanic")
+        {
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-info text-white mb-4">
+                    <div class="card-body">
+                        <h2>@ViewBag.CustomersCount</h2>
+                        <p>Klienci</p>
+                    </div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="/Customers/Index">Zobacz szczegóły</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-info text-white mb-4">
+                    <div class="card-body">
+                        <h2>@ViewBag.AssignedOrdersCount</h2>
+                        <p>Przypisane zlecenia</p>
+                    </div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="/ServiceOrders/Index">Zobacz szczegóły</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Szybkie akcje</h5>
+                </div>
+                <div class="card-body">
+                    @if (userRole == "Admin" || userRole == "Receptionist")
+                    {
+                        <a href="/Customers/Create" class="btn btn-primary me-2">
+                            <i class="fas fa-user-plus"></i> Dodaj klienta
+                        </a>
+                        <a href="/Vehicles/Create" class="btn btn-secondary me-2">
+                            <i class="fas fa-car"></i> Dodaj pojazd
+                        </a>
+                        <a href="/ServiceOrders/Create" class="btn btn-success me-2">
+                            <i class="fas fa-clipboard-list"></i> Utwórz zlecenie
+                        </a>
+                        @if (userRole == "Admin")
+                        {
+                            <a href="/Parts/Create" class="btn btn-info me-2">
+                                <i class="fas fa-cog"></i> Dodaj część
+                            </a>
+                            <a href="/Reports/Index" class="btn btn-warning">
+                                <i class="fas fa-chart-bar"></i> Generuj raport
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <a href="/ServiceOrders/Index" class="btn btn-primary me-2">
+                            <i class="fas fa-tasks"></i> Moje zlecenia
+                        </a>
+                        <a href="/ServiceOrders/Index?status=New" class="btn btn-success">
+                            <i class="fas fa-plus-circle"></i> Nowe zadania
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
