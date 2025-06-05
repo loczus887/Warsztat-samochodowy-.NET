@@ -1,0 +1,113 @@
+﻿@model WorkshopManager.DTOs.VehicleDto
+
+@{
+    ViewData["Title"] = "Edytuj pojazd";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">@ViewData["Title"] - @Model.VehicleInfo</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Edit" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="ImageUrl" />
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="CustomerId" class="form-label"></label>
+                                <select asp-for="CustomerId" class="form-select" asp-items="ViewBag.CustomerId">
+                                    <option value="">-- Wybierz klienta --</option>
+                                </select>
+                                <span asp-validation-for="CustomerId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label asp-for="Make" class="form-label"></label>
+                                <input asp-for="Make" class="form-control" />
+                                <span asp-validation-for="Make" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label asp-for="Model" class="form-label"></label>
+                                <input asp-for="Model" class="form-control" />
+                                <span asp-validation-for="Model" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label asp-for="RegistrationNumber" class="form-label"></label>
+                                <input asp-for="RegistrationNumber" class="form-control" />
+                                <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label asp-for="Year" class="form-label"></label>
+                                <input asp-for="Year" class="form-control" type="number" min="1900" max="2100" />
+                                <span asp-validation-for="Year" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label asp-for="VIN" class="form-label"></label>
+                                <input asp-for="VIN" class="form-control" />
+                                <span asp-validation-for="VIN" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="ImageFile" class="form-label"></label>
+                                <input asp-for="ImageFile" class="form-control" type="file" accept="image/*" />
+                                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                                <div class="form-text">Zostaw puste, aby zachować aktualne zdjęcie. Dozwolone formaty: JPG, PNG, GIF.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                            {
+                                <label class="form-label">Aktualne zdjęcie:</label>
+                                <div>
+                                    <img src="@Model.ImageUrl" alt="Aktualne zdjęcie pojazdu"
+                                         class="img-thumbnail" style="max-width: 200px; max-height: 150px;">
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Powrót do listy
+                        </a>
+                        <div>
+                            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-info me-2">
+                                <i class="fas fa-eye"></i> Szczegóły
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-save"></i> Aktualizuj
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

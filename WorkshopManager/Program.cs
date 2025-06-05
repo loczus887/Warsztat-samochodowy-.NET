@@ -6,6 +6,8 @@ using WorkshopManager.Models;
 using WorkshopManager.Services.Interfaces;
 using WorkshopManager.Services;
 using WorkshopManager.BackgroundServices;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using NLog;
 using NLog.Web;
 
@@ -20,8 +22,6 @@ try
     builder.Host.UseNLog();
 
     // Add services to the container.
-    builder.Services.AddControllersWithViews();
-
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
         throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
@@ -30,8 +30,7 @@ try
 
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-    builder.Services.AddScoped<IServiceOrderService, ServiceOrderService>();
-
+    // Konfiguracja Identity (BEZ .AddDefaultUI())
     builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
         options.SignIn.RequireConfirmedAccount = false;
         options.Password.RequireDigit = true;
@@ -41,8 +40,15 @@ try
         options.Password.RequiredLength = 6;
     })
         .AddEntityFrameworkStores<ApplicationDbContext>()
-        .AddDefaultTokenProviders()
-        .AddDefaultUI();
+        .AddDefaultTokenProviders();
+
+    // Rejestracja WSZYSTKICH serwisów
+    builder.Services.AddScoped<ICustomerService, CustomerService>();
+    builder.Services.AddScoped<IVehicleService, VehicleService>();
+    builder.Services.AddScoped<IServiceOrderService, ServiceOrderService>();
+    builder.Services.AddScoped<IPartService, PartService>();
+    builder.Services.AddScoped<IReportService, ReportService>();
+    builder.Services.AddScoped<IDashboardService, DashboardService>();
 
     // Rejestracja maperów Mapperly
     builder.Services.AddScoped<CustomerMapper>();
@@ -53,30 +59,22 @@ try
     builder.Services.AddScoped<UsedPartMapper>();
     builder.Services.AddScoped<CommentMapper>();
 
+    // DinkToPdf
+    builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
+    // Background Service
     builder.Services.AddHostedService<DailyReportBackgroundService>();
+
+    builder.Services.AddControllersWithViews();
+    builder.Services.AddRazorPages();
 
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.
-    if (!app.Environment.IsDevelopment())
-    {
-        app.UseExceptionHandler("/Home/Error");
-        app.UseHsts();
-    }
-
-    app.UseHttpsRedirection();
-    app.UseStaticFiles();
-
-    app.UseRouting();
-
-    app.UseAuthorization();
-
-    app.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
-
     if (app.Environment.IsDevelopment())
     {
+        app.UseMigrationsEndPoint();
+
         using (var scope = app.Services.CreateScope())
         {
             var services = scope.ServiceProvider;
@@ -94,6 +92,25 @@ try
             }
         }
     }
+    else
+    {
+        app.UseExceptionHandler("/Home/Error");
+        app.UseHsts();
+    }
+
+    app.UseHttpsRedirection();
+    app.UseStaticFiles();
+
+    app.UseRouting();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+
+    app.MapRazorPages();
 
     app.Run();
 }

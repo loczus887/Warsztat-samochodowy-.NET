@@ -1,0 +1,81 @@
+﻿@model WorkshopManager.DTOs.VehicleDto
+
+@{
+    ViewData["Title"] = "Usuń pojazd";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">@ViewData["Title"]</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Czy na pewno chcesz usunąć ten pojazd?
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img src="@Model.ImageUrl" alt="Zdjęcie pojazdu" class="img-fluid rounded">
+                        }
+                        else
+                        {
+                            <div class="bg-light d-flex align-items-center justify-content-center rounded"
+                                 style="height: 150px;">
+                                <i class="fas fa-car fa-3x text-muted"></i>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-8">
+                        <dl class="row">
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Make)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Make)</dd>
+
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Model)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Model)</dd>
+
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.RegistrationNumber)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.RegistrationNumber)</dd>
+
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Year)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Year)</dd>
+
+                            @if (!string.IsNullOrEmpty(Model.VIN))
+                            {
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.VIN)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.VIN)</dd>
+                            }
+
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CustomerFullName)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.CustomerFullName)</dd>
+                        </dl>
+                    </div>
+                </div>
+
+                @if (Model.ServiceOrderCount > 0)
+                {
+                    <div class="alert alert-warning mt-3">
+                        <strong>Uwaga!</strong> Ten pojazd ma @Model.ServiceOrderCount zlecenie(ń) serwisowych.
+                        Usunięcie pojazdu spowoduje również usunięcie wszystkich powiązanych zleceń i zadań.
+                    </div>
+                }
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Anuluj
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Usuń pojazd
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

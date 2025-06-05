@@ -68,6 +68,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFydHNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/bea_l/Desktop/Warsztat-samochodowy-.NET/WorkshopManager/Views/Parts/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFydHNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/bea_l/Desktop/Warsztat-samochodowy-.NET/WorkshopManager/Views/Parts/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFydHNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -104,6 +108,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZU9yZGVyc1xEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/bea_l/Desktop/Warsztat-samochodowy-.NET/WorkshopManager/Views/ServiceOrders/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZU9yZGVyc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/bea_l/Desktop/Warsztat-samochodowy-.NET/WorkshopManager/Views/ServiceOrders/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZU9yZGVyc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -114,6 +122,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/bea_l/Desktop/Warsztat-samochodowy-.NET/WorkshopManager/Views/ServiceTasks/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVRhc2tzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bea_l/Desktop/Warsztat-samochodowy-.NET/WorkshopManager/Views/ServiceTasks/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVRhc2tzXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/bea_l/Desktop/Warsztat-samochodowy-.NET/WorkshopManager/Views/Shared/Error.cshtml]
@@ -128,8 +140,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZXNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/bea_l/Desktop/Warsztat-samochodowy-.NET/WorkshopManager/Views/Vehicles/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/bea_l/Desktop/Warsztat-samochodowy-.NET/WorkshopManager/Views/Vehicles/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bea_l/Desktop/Warsztat-samochodowy-.NET/WorkshopManager/Views/Vehicles/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZXNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/bea_l/Desktop/Warsztat-samochodowy-.NET/WorkshopManager/Views/Vehicles/Index.cshtml]

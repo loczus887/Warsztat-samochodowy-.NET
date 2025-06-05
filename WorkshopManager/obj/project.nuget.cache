@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ZqHXkm34lU8=",
+  "dgSpecHash": "6FdVfVpTXB4=",
   "success": true,
   "projectFilePath": "C:\\Users\\bea_l\\Desktop\\Warsztat-samochodowy-.NET\\WorkshopManager\\WorkshopManager.csproj",
   "expectedPackageFiles": [
@@ -12,7 +12,6 @@
     "C:\\Users\\bea_l\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\8.0.5\\microsoft.aspnetcore.cryptography.keyderivation.8.0.5.nupkg.sha512",
     "C:\\Users\\bea_l\\.nuget\\packages\\microsoft.aspnetcore.diagnostics.entityframeworkcore\\8.0.5\\microsoft.aspnetcore.diagnostics.entityframeworkcore.8.0.5.nupkg.sha512",
     "C:\\Users\\bea_l\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\8.0.5\\microsoft.aspnetcore.identity.entityframeworkcore.8.0.5.nupkg.sha512",
-    "C:\\Users\\bea_l\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\8.0.5\\microsoft.aspnetcore.identity.ui.8.0.5.nupkg.sha512",
     "C:\\Users\\bea_l\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
     "C:\\Users\\bea_l\\.nuget\\packages\\microsoft.build.framework\\17.8.3\\microsoft.build.framework.17.8.3.nupkg.sha512",
     "C:\\Users\\bea_l\\.nuget\\packages\\microsoft.build.locator\\1.7.8\\microsoft.build.locator.1.7.8.nupkg.sha512",
@@ -38,8 +37,6 @@
     "C:\\Users\\bea_l\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\9.0.5\\microsoft.extensions.dependencyinjection.9.0.5.nupkg.sha512",
     "C:\\Users\\bea_l\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\9.0.5\\microsoft.extensions.dependencyinjection.abstractions.9.0.5.nupkg.sha512",
     "C:\\Users\\bea_l\\.nuget\\packages\\microsoft.extensions.dependencymodel\\9.0.5\\microsoft.extensions.dependencymodel.9.0.5.nupkg.sha512",
-    "C:\\Users\\bea_l\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\8.0.0\\microsoft.extensions.fileproviders.abstractions.8.0.0.nupkg.sha512",
-    "C:\\Users\\bea_l\\.nuget\\packages\\microsoft.extensions.fileproviders.embedded\\8.0.5\\microsoft.extensions.fileproviders.embedded.8.0.5.nupkg.sha512",
     "C:\\Users\\bea_l\\.nuget\\packages\\microsoft.extensions.identity.core\\8.0.5\\microsoft.extensions.identity.core.8.0.5.nupkg.sha512",
     "C:\\Users\\bea_l\\.nuget\\packages\\microsoft.extensions.identity.stores\\8.0.5\\microsoft.extensions.identity.stores.8.0.5.nupkg.sha512",
     "C:\\Users\\bea_l\\.nuget\\packages\\microsoft.extensions.logging\\9.0.5\\microsoft.extensions.logging.9.0.5.nupkg.sha512",

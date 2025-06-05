@@ -7,18 +7,45 @@ namespace WorkshopManager.Mappers;
 [Mapper]
 public partial class PartMapper
 {
+    // Mapowanie z Part do PartDto
+    [MapProperty(nameof(Part.UsedParts), nameof(PartDto.UsageCount), Use = nameof(GetUsageCount))]
+    [MapperIgnoreSource(nameof(Part.UsedParts))] // Ignoruj kolekcję UsedParts (używamy GetUsageCount)
     public partial PartDto PartToDto(Part part);
 
-    [MapperIgnoreTarget(nameof(PartDto.UsageCount))]
+    // Mapowanie z PartDto do Part
+    [MapperIgnoreSource(nameof(PartDto.UsageCount))] // UsageCount to tylko właściwość wyświetlania
+    [MapperIgnoreTarget(nameof(Part.UsedParts))] // UsedParts będą załadowane przez EF
     public partial Part DtoToPart(PartDto dto);
 
+    // Mapowanie kolekcji
     public partial IEnumerable<PartDto> PartsToDto(IEnumerable<Part> parts);
 
-    // Metoda z ręczną implementacją
+    // Pomocnicza metoda do liczenia użyć
+    private int GetUsageCount(ICollection<UsedPart>? usedParts)
+    {
+        return usedParts?.Count ?? 0;
+    }
+
+    // Metoda z pełnymi detalami (ręczna implementacja)
     public PartDto PartToDtoWithUsage(Part part)
     {
         var dto = PartToDto(part);
-        dto.UsageCount = part.UsedParts?.Count ?? 0;
+
+        // UsageCount już jest mapowany automatycznie
+
         return dto;
+    }
+
+    // Alternatywna metoda bez automatycznego mapowania (jeśli nadal są problemy)
+    public PartDto PartToDtoManual(Part part)
+    {
+        return new PartDto
+        {
+            Id = part.Id,
+            Name = part.Name,
+            Category = part.Category,
+            UnitPrice = part.UnitPrice,
+            UsageCount = part.UsedParts?.Count ?? 0
+        };
     }
 }
