@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Zlecenia serwisowe";
-    var currentStatus = ViewBag.CurrentStatus;
+    var currentStatus = ViewBag.Status;
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -15,13 +15,108 @@
     }
 </div>
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h5 class="mb-0">Filtry i wyszukiwanie</h5>
+    </div>
+    <div class="card-body">
+        <form asp-action="Index" method="get">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">Wyszukiwanie</label>
+                    <input type="text" name="search" value="@ViewBag.Search"
+                           class="form-control" placeholder="Opis, pojazd, klient, mechanik...">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Status</label>
+                    <select name="status" class="form-select" asp-items="ViewBag.StatusOptions">
+                        <option value="">Wszystkie</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Mechanik</label>
+                    <select name="mechanicId" class="form-select" asp-items="ViewBag.Mechanics">
+                        <option value="">Wszyscy mechanicy</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Sortowanie</label>
+                    <select name="sortBy" class="form-select">
+                        <option value="CreatedAt" selected="@(ViewBag.SortBy == "CreatedAt")">Data utworzenia (najnowsze)</option>
+                        <option value="Status" selected="@(ViewBag.SortBy == "Status")">Status</option>
+                        <option value="VehicleInfo" selected="@(ViewBag.SortBy == "VehicleInfo")">Pojazd</option>
+                        <option value="CustomerName" selected="@(ViewBag.SortBy == "CustomerName")">Klient</option>
+                        <option value="MechanicName" selected="@(ViewBag.SortBy == "MechanicName")">Mechanik</option>
+                        <option value="TotalCost" selected="@(ViewBag.SortBy == "TotalCost")">Koszt (najwyższy)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label class="form-label">Data od</label>
+                    <input type="date" name="dateFrom" value="@ViewBag.DateFrom" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Data do</label>
+                    <input type="date" name="dateTo" value="@ViewBag.DateTo" class="form-control">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="fas fa-search"></i> Filtruj
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-times"></i> Wyczyść
+                    </a>
+                </div>
+                <div class="col-md-3 d-flex align-items-end justify-content-end">
+                    @if (ViewBag.TotalCount != null)
+                    {
+                        <span class="badge bg-info fs-6">Znaleziono: @ViewBag.TotalCount</span>
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="mb-3">
     <div class="btn-group" role="group">
-        <a asp-action="Index" class="btn @(currentStatus == null ? "btn-primary" : "btn-outline-primary")">Wszystkie</a>
-        <a asp-action="Index" asp-route-status="New" class="btn @(currentStatus?.ToString() == "New" ? "btn-warning" : "btn-outline-warning")">Nowe</a>
-        <a asp-action="Index" asp-route-status="InProgress" class="btn @(currentStatus?.ToString() == "InProgress" ? "btn-info" : "btn-outline-info")">W trakcie</a>
-        <a asp-action="Index" asp-route-status="Completed" class="btn @(currentStatus?.ToString() == "Completed" ? "btn-success" : "btn-outline-success")">Ukończone</a>
-        <a asp-action="Index" asp-route-status="Cancelled" class="btn @(currentStatus?.ToString() == "Cancelled" ? "btn-danger" : "btn-outline-danger")">Anulowane</a>
+        <a asp-action="Index" class="btn @(currentStatus == null ? "btn-primary" : "btn-outline-primary")">
+            Wszystkie
+        </a>
+        <a asp-action="Index" asp-route-status="New"
+           class="btn @(currentStatus?.ToString() == "New" ? "btn-warning" : "btn-outline-warning")">
+            Nowe
+        </a>
+        <a asp-action="Index" asp-route-status="InProgress"
+           class="btn @(currentStatus?.ToString() == "InProgress" ? "btn-info" : "btn-outline-info")">
+            W trakcie
+        </a>
+        <a asp-action="Index" asp-route-status="Completed"
+           class="btn @(currentStatus?.ToString() == "Completed" ? "btn-success" : "btn-outline-success")">
+            Ukończone
+        </a>
+        <a asp-action="Index" asp-route-status="Cancelled"
+           class="btn @(currentStatus?.ToString() == "Cancelled" ? "btn-danger" : "btn-outline-danger")">
+            Anulowane
+        </a>
     </div>
 </div>
 
@@ -31,15 +126,38 @@
         {
             <div class="table-responsive">
                 <table class="table table-hover">
-                    <thead>
+                    <thead class="table-light">
                         <tr>
                             <th>Nr zlecenia</th>
-                            <th>Data utworzenia</th>
+                            <th>
+                                <a asp-action="Index" asp-route-search="@ViewBag.Search" asp-route-status="@ViewBag.Status"
+                                   asp-route-mechanicId="@ViewBag.MechanicId" asp-route-dateFrom="@ViewBag.DateFrom"
+                                   asp-route-dateTo="@ViewBag.DateTo" asp-route-sortBy="CreatedAt"
+                                   class="text-decoration-none text-dark">
+                                    Data utworzenia
+                                    @if (ViewBag.SortBy == "CreatedAt")
+                                    {
+                                        <i class="fas fa-sort-down"></i>
+                                    }
+                                </a>
+                            </th>
                             <th>Pojazd</th>
                             <th>Klient</th>
                             <th>Mechanik</th>
                             <th>Status</th>
-                            <th>Koszt</th>
+                            <th>Opis</th>
+                            <th>
+                                <a asp-action="Index" asp-route-search="@ViewBag.Search" asp-route-status="@ViewBag.Status"
+                                   asp-route-mechanicId="@ViewBag.MechanicId" asp-route-dateFrom="@ViewBag.DateFrom"
+                                   asp-route-dateTo="@ViewBag.DateTo" asp-route-sortBy="TotalCost"
+                                   class="text-decoration-none text-dark">
+                                    Koszt
+                                    @if (ViewBag.SortBy == "TotalCost")
+                                    {
+                                        <i class="fas fa-sort-down"></i>
+                                    }
+                                </a>
+                            </th>
                             <th>Akcje</th>
                         </tr>
                     </thead>
@@ -48,15 +166,45 @@
                         {
                             <tr>
                                 <td><strong>#@order.Id</strong></td>
-                                <td>@order.CreatedAt.ToString("dd.MM.yyyy")</td>
-                                <td>@order.VehicleInfo</td>
-                                <td>@order.CustomerName</td>
-                                <td>@(order.MechanicName ?? "Nieprzypisany")</td>
+                                <td>
+                                    <div>@order.CreatedAt.ToString("dd.MM.yyyy")</div>
+                                    <small class="text-muted">@order.CreatedAt.ToString("HH:mm")</small>
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(order.VehicleInfo))
+                                    {
+                                        <div>@order.VehicleInfo</div>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Brak informacji</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(order.CustomerName))
+                                    {
+                                        @order.CustomerName
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Brak</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(order.MechanicName))
+                                    {
+                                        @order.MechanicName
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Nieprzypisany</span>
+                                    }
+                                </td>
                                 <td>
                                     @switch (order.Status.ToString())
                                     {
                                         case "New":
-                                            <span class="badge bg-warning">Nowe</span>
+                                            <span class="badge bg-warning text-dark">Nowe</span>
                                             break;
                                         case "InProgress":
                                             <span class="badge bg-info">W trakcie</span>
@@ -72,15 +220,31 @@
                                             break;
                                     }
                                 </td>
-                                <td>@order.TotalCost.ToString("C")</td>
+                                <td>
+                                    <div style="max-width: 200px;">
+                                        @if (order.Description.Length > 50)
+                                        {
+                                            <span title="@order.Description">@(order.Description.Substring(0, 50))...</span>
+                                        }
+                                        else
+                                        {
+                                            @order.Description
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong>@order.TotalCost.ToString("C")</strong>
+                                </td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-outline-info">
+                                        <a asp-action="Details" asp-route-id="@order.Id"
+                                           class="btn btn-sm btn-outline-info" title="Szczegóły">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         @if (User.IsInRole("Admin") || User.IsInRole("Receptionist"))
                                         {
-                                            <a asp-action="Edit" asp-route-id="@order.Id" class="btn btn-sm btn-outline-warning">
+                                            <a asp-action="Edit" asp-route-id="@order.Id"
+                                               class="btn btn-sm btn-outline-warning" title="Edytuj">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                         }
@@ -94,17 +258,26 @@
         }
         else
         {
-            <div class="text-center py-4">
+            <div class="text-center py-5">
                 <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
                 <h5>Brak zleceń</h5>
                 <p class="text-muted">
-                    @if (currentStatus != null)
+                    @if (currentStatus != null || !string.IsNullOrEmpty(ViewBag.Search?.ToString()))
                     {
-                        <span>Nie znaleziono zleceń o statusie @currentStatus.</span>
+                        <span>Nie znaleziono zleceń pasujących do filtrów.</span>
+                        <br>
+                        <a asp-action="Index" class="btn btn-link">Pokaż wszystkie zlecenia</a>
                     }
                     else
                     {
                         <span>Nie utworzono jeszcze żadnych zleceń.</span>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Receptionist"))
+                        {
+                            <br>
+                            <a asp-action="Create" class="btn btn-primary mt-2">
+                                <i class="fas fa-plus"></i> Utwórz pierwsze zlecenie
+                            </a>
+                        }
                     }
                 </p>
             </div>

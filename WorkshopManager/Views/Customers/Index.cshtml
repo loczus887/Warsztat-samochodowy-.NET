@@ -11,40 +11,113 @@
     </a>
 </div>
 
-<form asp-action="Index" method="get" class="mb-3">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="input-group">
-                <input type="text" name="searchString" value="@ViewData["CurrentFilter"]"
-                       class="form-control" placeholder="Szukaj klienta...">
-                <button class="btn btn-outline-secondary" type="submit">
-                    <i class="fas fa-search"></i> Szukaj
-                </button>
-            </div>
-        </div>
-        @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
-        {
-            <div class="col-md-2">
-                <a asp-action="Index" class="btn btn-outline-secondary">Wyczyść</a>
-            </div>
-        }
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
-</form>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form asp-action="Index" method="get">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" name="search" value="@ViewBag.Search"
+                               class="form-control" placeholder="Szukaj po imieniu, nazwisku, emailu lub telefonie...">
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <i class="fas fa-search"></i> Szukaj
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select name="sortBy" class="form-select" onchange="this.form.submit()">
+                        <option value="LastName" selected="@(ViewBag.SortBy == "LastName")">Sortuj po nazwisku</option>
+                        <option value="FirstName" selected="@(ViewBag.SortBy == "FirstName")">Sortuj po imieniu</option>
+                        <option value="Email" selected="@(ViewBag.SortBy == "Email")">Sortuj po emailu</option>
+                        <option value="PhoneNumber" selected="@(ViewBag.SortBy == "PhoneNumber")">Sortuj po telefonie</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    @if (!string.IsNullOrEmpty(ViewBag.Search?.ToString()))
+                    {
+                        <a asp-action="Index" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-times"></i> Wyczyść
+                        </a>
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Lista klientów</h5>
+        @if (ViewBag.TotalCount != null)
+        {
+            <span class="badge bg-primary">Znaleziono: @ViewBag.TotalCount</span>
+        }
+    </div>
     <div class="card-body">
         @if (Model.Any())
         {
             <div class="table-responsive">
                 <table class="table table-hover">
-                    <thead>
+                    <thead class="table-light">
                         <tr>
-                            <th>Imię</th>
-                            <th>Nazwisko</th>
-                            <th>Telefon</th>
-                            <th>Email</th>
+                            <th>
+                                <a asp-action="Index" asp-route-search="@ViewBag.Search" asp-route-sortBy="FirstName"
+                                   class="text-decoration-none text-dark">
+                                    Imię
+                                    @if (ViewBag.SortBy == "FirstName")
+                                    {
+                                        <i class="fas fa-sort-down"></i>
+                                    }
+                                </a>
+                            </th>
+                            <th>
+                                <a asp-action="Index" asp-route-search="@ViewBag.Search" asp-route-sortBy="LastName"
+                                   class="text-decoration-none text-dark">
+                                    Nazwisko
+                                    @if (ViewBag.SortBy == "LastName")
+                                    {
+                                        <i class="fas fa-sort-down"></i>
+                                    }
+                                </a>
+                            </th>
+                            <th>
+                                <a asp-action="Index" asp-route-search="@ViewBag.Search" asp-route-sortBy="PhoneNumber"
+                                   class="text-decoration-none text-dark">
+                                    Telefon
+                                    @if (ViewBag.SortBy == "PhoneNumber")
+                                    {
+                                        <i class="fas fa-sort-down"></i>
+                                    }
+                                </a>
+                            </th>
+                            <th>
+                                <a asp-action="Index" asp-route-search="@ViewBag.Search" asp-route-sortBy="Email"
+                                   class="text-decoration-none text-dark">
+                                    Email
+                                    @if (ViewBag.SortBy == "Email")
+                                    {
+                                        <i class="fas fa-sort-down"></i>
+                                    }
+                                </a>
+                            </th>
                             <th>Liczba pojazdów</th>
-                            <th>Akcje</th>
+                            <th style="width: 200px;">Akcje</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,22 +126,39 @@
                             <tr>
                                 <td>@customer.FirstName</td>
                                 <td>@customer.LastName</td>
-                                <td>@customer.PhoneNumber</td>
-                                <td>@customer.Email</td>
-                                <td>@customer.VehicleCount</td>
                                 <td>
-                                    <div class="btn-group" role="group">
+                                    <a href="tel:@customer.PhoneNumber" class="text-decoration-none">
+                                        @customer.PhoneNumber
+                                    </a>
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(customer.Email))
+                                    {
+                                        <a href="mailto:@customer.Email" class="text-decoration-none">
+                                            @customer.Email
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Brak</span>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">@customer.VehicleCount</span>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Akcje">
                                         <a asp-action="Details" asp-route-id="@customer.Id"
-                                           class="btn btn-sm btn-outline-info">
-                                            <i class="fas fa-eye"></i> Szczegóły
+                                           class="btn btn-sm btn-outline-info" title="Szczegóły">
+                                            <i class="fas fa-eye"></i>
                                         </a>
                                         <a asp-action="Edit" asp-route-id="@customer.Id"
-                                           class="btn btn-sm btn-outline-warning">
-                                            <i class="fas fa-edit"></i> Edytuj
+                                           class="btn btn-sm btn-outline-warning" title="Edytuj">
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         <a asp-action="Delete" asp-route-id="@customer.Id"
-                                           class="btn btn-sm btn-outline-danger">
-                                            <i class="fas fa-trash"></i> Usuń
+                                           class="btn btn-sm btn-outline-danger" title="Usuń">
+                                            <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
                                 </td>
@@ -80,17 +170,23 @@
         }
         else
         {
-            <div class="text-center py-4">
+            <div class="text-center py-5">
                 <i class="fas fa-users fa-3x text-muted mb-3"></i>
                 <h5>Brak klientów</h5>
                 <p class="text-muted">
-                    @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
+                    @if (!string.IsNullOrEmpty(ViewBag.Search?.ToString()))
                     {
-                        <span>Nie znaleziono klientów pasujących do wyszukiwania.</span>
+                        <span>Nie znaleziono klientów pasujących do wyszukiwania "<strong>@ViewBag.Search</strong>".</span>
+                        <br>
+                        <a asp-action="Index" class="btn btn-link">Pokaż wszystkich klientów</a>
                     }
                     else
                     {
                         <span>Nie dodano jeszcze żadnych klientów.</span>
+                        <br>
+                        <a asp-action="Create" class="btn btn-primary mt-2">
+                            <i class="fas fa-plus"></i> Dodaj pierwszego klienta
+                        </a>
                     }
                 </p>
             </div>

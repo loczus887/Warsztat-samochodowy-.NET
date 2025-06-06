@@ -12,30 +12,57 @@ public class CustomersController : Controller
 {
     private readonly ICustomerService _customerService;
     private readonly CustomerMapper _mapper;
+    private readonly ILogger<CustomersController> _logger;
 
     public CustomersController(
         ICustomerService customerService,
-        CustomerMapper mapper)
+        CustomerMapper mapper,
+        ILogger<CustomersController> logger)
     {
         _customerService = customerService;
         _mapper = mapper;
+        _logger = logger;
     }
 
-    // GET: Customers
-    public async Task<IActionResult> Index(string searchString)
+    public async Task<IActionResult> Index(string search, string sortBy = "LastName")
     {
-        var customers = string.IsNullOrEmpty(searchString)
-            ? await _customerService.GetAllCustomersAsync()
-            : await _customerService.SearchCustomersAsync(searchString);
+        try
+        {
+            var customers = await _customerService.GetAllCustomersAsync();
+            var customerDtos = _mapper.CustomersToDto(customers);
 
-        var customerDtos = _mapper.CustomersToDto(customers);
+            if (!string.IsNullOrEmpty(search))
+            {
+                customerDtos = customerDtos.Where(c =>
+                    c.FirstName.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    c.LastName.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    (!string.IsNullOrEmpty(c.Email) && c.Email.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
+                    c.PhoneNumber.Contains(search, StringComparison.OrdinalIgnoreCase)
+                ).ToList();
+            }
 
-        ViewData["CurrentFilter"] = searchString;
+            customerDtos = sortBy switch
+            {
+                "FirstName" => customerDtos.OrderBy(c => c.FirstName).ToList(),
+                "Email" => customerDtos.OrderBy(c => c.Email).ToList(),
+                "PhoneNumber" => customerDtos.OrderBy(c => c.PhoneNumber).ToList(),
+                _ => customerDtos.OrderBy(c => c.LastName).ToList()
+            };
 
-        return View(customerDtos);
+            ViewBag.Search = search;
+            ViewBag.SortBy = sortBy;
+            ViewBag.TotalCount = customerDtos.Count();
+
+            return View(customerDtos);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error loading customers");
+            TempData["ErrorMessage"] = "Wystąpił błąd podczas ładowania klientów.";
+            return View(new List<CustomerDto>());
+        }
     }
 
-    // GET: Customers/Details/5
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
@@ -43,42 +70,61 @@ public class CustomersController : Controller
             return NotFound();
         }
 
-        var customer = await _customerService.GetCustomerByIdAsync(id.Value);
-        if (customer == null)
+        try
         {
-            return NotFound();
+            var customer = await _customerService.GetCustomerByIdAsync(id.Value);
+            if (customer == null)
+            {
+                _logger.LogWarning("Customer with ID {CustomerId} not found", id);
+                return NotFound();
+            }
+
+            var customerDto = _mapper.CustomerToDto(customer);
+
+
+            ViewData["Vehicles"] = customer.Vehicles?.ToList() ?? new List<Vehicle>();
+
+            _logger.LogInformation("Successfully loaded customer {CustomerId} with {VehicleCount} vehicles",
+                id, customer.Vehicles?.Count ?? 0);
+
+            return View(customerDto);
         }
-
-        var customerDto = _mapper.CustomerToDto(customer);
-
-        // Pobierz pojazdy klienta
-        var vehicles = await _customerService.GetCustomerVehiclesAsync(id.Value);
-        ViewData["Vehicles"] = vehicles;
-
-        return View(customerDto);
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error loading customer {CustomerId} details. Message: {Message}", id, ex.Message);
+            TempData["ErrorMessage"] = "Wystąpił błąd podczas ładowania szczegółów klienta.";
+            return RedirectToAction(nameof(Index));
+        }
     }
 
-    // GET: Customers/Create
     public IActionResult Create()
     {
         return View();
     }
 
-    // POST: Customers/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CustomerDto customerDto)
     {
-        if (ModelState.IsValid)
+        try
         {
-            var customer = _mapper.DtoToCustomer(customerDto);
-            await _customerService.CreateCustomerAsync(customer);
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                var customer = _mapper.DtoToCustomer(customerDto);
+                await _customerService.CreateCustomerAsync(customer);
+                TempData["SuccessMessage"] = "Klient został pomyślnie dodany.";
+                return RedirectToAction(nameof(Index));
+            }
         }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating customer");
+            ModelState.AddModelError("", "Wystąpił błąd podczas dodawania klienta.");
+        }
+
         return View(customerDto);
     }
 
-    // GET: Customers/Edit/5
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -86,17 +132,24 @@ public class CustomersController : Controller
             return NotFound();
         }
 
-        var customer = await _customerService.GetCustomerByIdAsync(id.Value);
-        if (customer == null)
+        try
         {
+            var customer = await _customerService.GetCustomerByIdAsync(id.Value);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            var customerDto = _mapper.CustomerToDto(customer);
+            return View(customerDto);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error loading customer {CustomerId} for edit", id);
             return NotFound();
         }
-
-        var customerDto = _mapper.CustomerToDto(customer);
-        return View(customerDto);
     }
 
-    // POST: Customers/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, CustomerDto customerDto)
@@ -106,27 +159,29 @@ public class CustomersController : Controller
             return NotFound();
         }
 
-        if (ModelState.IsValid)
+        try
         {
-            try
+            if (ModelState.IsValid)
             {
                 var customer = _mapper.DtoToCustomer(customerDto);
                 await _customerService.UpdateCustomerAsync(customer);
+                TempData["SuccessMessage"] = "Klient został pomyślnie zaktualizowany.";
+                return RedirectToAction(nameof(Index));
             }
-            catch (Exception)
-            {
-                if (!await CustomerExists(customerDto.Id))
-                {
-                    return NotFound();
-                }
-                throw;
-            }
-            return RedirectToAction(nameof(Index));
         }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating customer {CustomerId}", id);
+            if (!await CustomerExists(customerDto.Id))
+            {
+                return NotFound();
+            }
+            ModelState.AddModelError("", "Wystąpił błąd podczas aktualizacji klienta.");
+        }
+
         return View(customerDto);
     }
 
-    // GET: Customers/Delete/5
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
@@ -134,28 +189,52 @@ public class CustomersController : Controller
             return NotFound();
         }
 
-        var customer = await _customerService.GetCustomerByIdAsync(id.Value);
-        if (customer == null)
+        try
         {
+            var customer = await _customerService.GetCustomerByIdAsync(id.Value);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            var customerDto = _mapper.CustomerToDto(customer);
+            return View(customerDto);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error loading customer {CustomerId} for delete", id);
             return NotFound();
         }
-
-        var customerDto = _mapper.CustomerToDto(customer);
-        return View(customerDto);
     }
 
-    // POST: Customers/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        await _customerService.DeleteCustomerAsync(id);
+        try
+        {
+            await _customerService.DeleteCustomerAsync(id);
+            TempData["SuccessMessage"] = "Klient został pomyślnie usunięty.";
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting customer {CustomerId}", id);
+            TempData["ErrorMessage"] = "Wystąpił błąd podczas usuwania klienta.";
+        }
+
         return RedirectToAction(nameof(Index));
     }
 
     private async Task<bool> CustomerExists(int id)
     {
-        var customer = await _customerService.GetCustomerByIdAsync(id);
-        return customer != null;
+        try
+        {
+            var customer = await _customerService.GetCustomerByIdAsync(id);
+            return customer != null;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
