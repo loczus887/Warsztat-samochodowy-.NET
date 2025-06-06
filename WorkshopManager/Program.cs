@@ -18,10 +18,8 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    // U¿ycie NLog jako providera logowania
     builder.Host.UseNLog();
 
-    // Add services to the container.
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
         throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
@@ -30,7 +28,6 @@ try
 
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-    // Konfiguracja Identity (BEZ .AddDefaultUI())
     builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
         options.SignIn.RequireConfirmedAccount = false;
         options.Password.RequireDigit = true;
@@ -42,15 +39,14 @@ try
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
 
-    // Rejestracja WSZYSTKICH serwisów
     builder.Services.AddScoped<ICustomerService, CustomerService>();
     builder.Services.AddScoped<IVehicleService, VehicleService>();
     builder.Services.AddScoped<IServiceOrderService, ServiceOrderService>();
     builder.Services.AddScoped<IPartService, PartService>();
     builder.Services.AddScoped<IReportService, ReportService>();
     builder.Services.AddScoped<IDashboardService, DashboardService>();
+    builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 
-    // Rejestracja maperów Mapperly
     builder.Services.AddScoped<CustomerMapper>();
     builder.Services.AddScoped<VehicleMapper>();
     builder.Services.AddScoped<ServiceOrderMapper>();
@@ -59,21 +55,36 @@ try
     builder.Services.AddScoped<UsedPartMapper>();
     builder.Services.AddScoped<CommentMapper>();
 
-    // DinkToPdf
     builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
-    // Background Service
     builder.Services.AddHostedService<DailyReportBackgroundService>();
+
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new()
+        {
+            Title = "Workshop Manager API",
+            Version = "v1",
+            Description = "API dla systemu zarz¹dzania warsztatem samochodowym"
+        });
+    });
 
     builder.Services.AddControllersWithViews();
     builder.Services.AddRazorPages();
 
     var app = builder.Build();
 
-    // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
         app.UseMigrationsEndPoint();
+
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Workshop Manager API v1");
+            c.RoutePrefix = "swagger";
+        });
 
         using (var scope = app.Services.CreateScope())
         {

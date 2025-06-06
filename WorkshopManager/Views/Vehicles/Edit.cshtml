@@ -11,7 +11,7 @@
                 <h4 class="mb-0">@ViewData["Title"] - @Model.VehicleInfo</h4>
             </div>
             <div class="card-body">
-                <form asp-action="Edit" enctype="multipart/form-data">
+                <form asp-action="Edit" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                     <input type="hidden" asp-for="Id" />
                     <input type="hidden" asp-for="ImageUrl" />
@@ -60,7 +60,7 @@
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label asp-for="VIN" class="form-label"></label>
-                                <input asp-for="VIN" class="form-control" />
+                                <input asp-for="VIN" class="form-control" maxlength="17" />
                                 <span asp-validation-for="VIN" class="text-danger"></span>
                             </div>
                         </div>
@@ -70,18 +70,27 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label asp-for="ImageFile" class="form-label"></label>
-                                <input asp-for="ImageFile" class="form-control" type="file" accept="image/*" />
+                                <input asp-for="ImageFile" class="form-control" type="file" accept="image/jpeg,image/png,image/gif,image/bmp" />
                                 <span asp-validation-for="ImageFile" class="text-danger"></span>
-                                <div class="form-text">Zostaw puste, aby zachować aktualne zdjęcie. Dozwolone formaty: JPG, PNG, GIF.</div>
+                                <div class="form-text">Zostaw puste, aby zachować aktualne zdjęcie. Dozwolone formaty: JPG, PNG, GIF, BMP (max 5MB)</div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             @if (!string.IsNullOrEmpty(Model.ImageUrl))
                             {
-                                <label class="form-label">Aktualne zdjęcie:</label>
-                                <div>
-                                    <img src="@Model.ImageUrl" alt="Aktualne zdjęcie pojazdu"
-                                         class="img-thumbnail" style="max-width: 200px; max-height: 150px;">
+                                <div class="mb-3">
+                                    <label class="form-label">Aktualne zdjęcie:</label>
+                                    <div>
+                                        <img src="@Model.ImageUrl" alt="Aktualne zdjęcie pojazdu"
+                                             class="img-thumbnail" style="max-width: 200px; max-height: 150px; object-fit: cover;">
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="mb-3">
+                                    <label class="form-label">Aktualne zdjęcie:</label>
+                                    <div class="text-muted">Brak zdjęcia</div>
                                 </div>
                             }
                         </div>
