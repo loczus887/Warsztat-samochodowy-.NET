@@ -1,11 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
 <div class="text-center">
     <h1 class="display-4">Workshop Manager</h1>
     <p class="lead">Nowoczesny system zarządzania warsztatem samochodowym</p>
-
     @if (User.Identity.IsAuthenticated)
     {
         <div class="mt-4">
@@ -15,20 +13,7 @@
             </a>
         </div>
     }
-    else
-    {
-        <div class="mt-4">
-            <p class="mb-4">Zaloguj się, aby uzyskać dostęp do systemu zarządzania warsztatem.</p>
-            <a class="btn btn-primary btn-lg me-3" asp-area="Identity" asp-page="/Account/Login">
-                <i class="fas fa-sign-in-alt"></i> Zaloguj się
-            </a>
-            <a class="btn btn-outline-secondary btn-lg" asp-area="Identity" asp-page="/Account/Register">
-                <i class="fas fa-user-plus"></i> Zarejestruj się
-            </a>
-        </div>
-    }
 </div>
-
 <div class="row mt-5">
     <div class="col-md-4">
         <div class="card">
