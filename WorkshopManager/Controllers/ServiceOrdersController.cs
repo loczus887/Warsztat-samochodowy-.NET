@@ -54,7 +54,7 @@ public class ServiceOrdersController : Controller
                 orders = await _orderService.GetAllServiceOrdersAsync();
             }
 
-            var orderDtos = _mapper.ServiceOrdersToDto(orders);
+            var orderDtos = orders.Select(o => _mapper.ServiceOrderToDtoWithDetails(o)).ToList();
 
             if (!string.IsNullOrEmpty(search))
             {
@@ -133,7 +133,7 @@ public class ServiceOrdersController : Controller
                 return NotFound();
             }
 
-            var orderDto = _mapper.ServiceOrderToDto(order);
+            var orderDto = _mapper.ServiceOrderToDtoWithDetails(order);
             return View(orderDto);
         }
         catch (Exception ex)
@@ -194,7 +194,7 @@ public class ServiceOrdersController : Controller
                 return NotFound();
             }
 
-            var orderDto = _mapper.ServiceOrderToDto(order);
+            var orderDto = _mapper.ServiceOrderToDtoWithDetails(order);
             await PopulateDropDownLists(order.VehicleId, order.MechanicId);
 
             return View(orderDto);
@@ -289,7 +289,7 @@ public class ServiceOrdersController : Controller
                 return NotFound();
             }
 
-            var orderDto = _mapper.ServiceOrderToDto(order);
+            var orderDto = _mapper.ServiceOrderToDtoWithDetails(order);
             return View(orderDto);
         }
         catch (Exception ex)

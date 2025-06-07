@@ -39,6 +39,10 @@ try
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
 
+    // Konfiguracja EmailSettings
+    builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
+    // Rejestracja serwisów
     builder.Services.AddScoped<ICustomerService, CustomerService>();
     builder.Services.AddScoped<IVehicleService, VehicleService>();
     builder.Services.AddScoped<IServiceOrderService, ServiceOrderService>();
@@ -46,7 +50,9 @@ try
     builder.Services.AddScoped<IReportService, ReportService>();
     builder.Services.AddScoped<IDashboardService, DashboardService>();
     builder.Services.AddScoped<IFileUploadService, FileUploadService>();
+    builder.Services.AddScoped<IEmailService, EmailService>(); // NOWY SERWIS
 
+    // Mappers
     builder.Services.AddScoped<CustomerMapper>();
     builder.Services.AddScoped<VehicleMapper>();
     builder.Services.AddScoped<ServiceOrderMapper>();
@@ -55,10 +61,13 @@ try
     builder.Services.AddScoped<UsedPartMapper>();
     builder.Services.AddScoped<CommentMapper>();
 
+    // PDF Generator
     builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
+    // Background Services
     builder.Services.AddHostedService<DailyReportBackgroundService>();
 
+    // API Documentation
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(c =>
     {

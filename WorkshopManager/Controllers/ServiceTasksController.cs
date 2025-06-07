@@ -15,15 +15,18 @@ public class ServiceTasksController : Controller
     private readonly IServiceOrderService _orderService;
     private readonly IPartService _partService;
     private readonly ServiceTaskMapper _mapper;
+    private readonly ApplicationDbContext _context;
 
     public ServiceTasksController(
         IServiceOrderService orderService,
         IPartService partService,
-        ServiceTaskMapper mapper)
+        ServiceTaskMapper mapper,
+        ApplicationDbContext context)
     {
         _orderService = orderService;
         _partService = partService;
         _mapper = mapper;
+        _context = context;
     }
 
     // GET: ServiceTasks/Create/5 (orderId)
@@ -38,6 +41,7 @@ public class ServiceTasksController : Controller
 
         var taskDto = new ServiceTaskDto { ServiceOrderId = orderId };
         ViewBag.OrderDescription = order.Description;
+        ViewBag.OrderId = orderId;
 
         return View(taskDto);
     }
@@ -47,30 +51,115 @@ public class ServiceTasksController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(ServiceTaskDto taskDto)
     {
-        if (ModelState.IsValid)
+        try
         {
-            var task = _mapper.DtoToServiceTask(taskDto);
-            await _orderService.AddTaskToOrderAsync(taskDto.ServiceOrderId, task);
+            if (ModelState.IsValid)
+            {
+                var task = _mapper.DtoToServiceTask(taskDto);
+                await _orderService.AddTaskToOrderAsync(taskDto.ServiceOrderId, task);
 
-            return RedirectToAction("Details", "ServiceOrders", new { id = taskDto.ServiceOrderId });
+                TempData["SuccessMessage"] = "Zadanie zostało dodane pomyślnie!";
+                return RedirectToAction("Details", "ServiceOrders", new { id = taskDto.ServiceOrderId });
+            }
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", $"Błąd podczas dodawania zadania: {ex.Message}");
         }
 
         // Jeśli modelState nie jest valid, pobierz ponownie dane dla widoku
         var order = await _orderService.GetServiceOrderByIdAsync(taskDto.ServiceOrderId);
         ViewBag.OrderDescription = order?.Description;
+        ViewBag.OrderId = taskDto.ServiceOrderId;
 
+        return View(taskDto);
+    }
+
+    // GET: ServiceTasks/Edit/5
+    public async Task<IActionResult> Edit(int id)
+    {
+        try
+        {
+            var task = await _context.ServiceTasks.FindAsync(id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            var taskDto = _mapper.ServiceTaskToDto(task);
+            ViewBag.OrderId = task.ServiceOrderId;
+
+            return View(taskDto);
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = $"Błąd podczas ładowania zadania: {ex.Message}";
+            return RedirectToAction("Index", "ServiceOrders");
+        }
+    }
+
+    // POST: ServiceTasks/Edit/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, ServiceTaskDto taskDto)
+    {
+        if (id != taskDto.Id)
+        {
+            return NotFound();
+        }
+
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                var task = await _context.ServiceTasks.FindAsync(id);
+                if (task == null)
+                {
+                    return NotFound();
+                }
+
+                task.Description = taskDto.Description;
+                task.LaborCost = taskDto.LaborCost;
+
+                _context.Update(task);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Zadanie zostało zaktualizowane!";
+                return RedirectToAction("Details", "ServiceOrders", new { id = task.ServiceOrderId });
+            }
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", $"Błąd podczas aktualizacji zadania: {ex.Message}");
+        }
+
+        ViewBag.OrderId = taskDto.ServiceOrderId;
         return View(taskDto);
     }
 
     // GET: ServiceTasks/AddPart/5 (taskId)
     public async Task<IActionResult> AddPart(int taskId)
     {
-        // Na razie uproszczona implementacja - w późniejszych commitach dodamy pełną obsługę części
-        var parts = await _partService.GetAllPartsAsync();
-        ViewBag.PartId = new SelectList(parts, "Id", "Name");
-        ViewBag.TaskId = taskId;
+        try
+        {
+            var task = await _context.ServiceTasks.FindAsync(taskId);
+            if (task == null)
+            {
+                return NotFound();
+            }
 
-        return View(new UsedPartDto { ServiceTaskId = taskId });
+            var parts = await _partService.GetAllPartsAsync();
+            ViewBag.PartId = new SelectList(parts, "Id", "Name");
+            ViewBag.TaskId = taskId;
+            ViewBag.TaskDescription = task.Description;
+
+            return View(new UsedPartDto { ServiceTaskId = taskId });
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = $"Błąd podczas ładowania części: {ex.Message}";
+            return RedirectToAction("Index", "ServiceOrders");
+        }
     }
 
     // POST: ServiceTasks/AddPart
@@ -78,29 +167,34 @@ public class ServiceTasksController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddPart(UsedPartDto partDto)
     {
-        if (ModelState.IsValid)
+        try
         {
-            // Znajdź zadanie w bazie danych
-            var order = await _orderService.GetServiceOrderByIdAsync(partDto.ServiceTaskId);
-            if (order != null)
+            if (ModelState.IsValid)
             {
-                var task = order.Tasks.FirstOrDefault(t => t.Id == partDto.ServiceTaskId);
-                if (task != null)
+                var task = await _context.ServiceTasks.FindAsync(partDto.ServiceTaskId);
+                if (task == null)
                 {
-                    var usedPart = new UsedPart
-                    {
-                        PartId = partDto.PartId,
-                        Quantity = partDto.Quantity,
-                        ServiceTaskId = partDto.ServiceTaskId
-                    };
-
-                    // Dodaj bezpośrednio do kontekstu
-                    _context.UsedParts.Add(usedPart);
-                    await _context.SaveChangesAsync();
-
-                    return RedirectToAction("Details", "ServiceOrders", new { id = order.Id });
+                    ModelState.AddModelError("", "Nie znaleziono zadania.");
+                    return View(partDto);
                 }
+
+                var usedPart = new UsedPart
+                {
+                    PartId = partDto.PartId,
+                    Quantity = partDto.Quantity,
+                    ServiceTaskId = partDto.ServiceTaskId
+                };
+
+                _context.UsedParts.Add(usedPart);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Część została dodana do zadania!";
+                return RedirectToAction("Details", "ServiceOrders", new { id = task.ServiceOrderId });
             }
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", $"Błąd podczas dodawania części: {ex.Message}");
         }
 
         var parts = await _partService.GetAllPartsAsync();
@@ -110,19 +204,31 @@ public class ServiceTasksController : Controller
         return View(partDto);
     }
 
-    // Tymczasowo wstrzyknij DbContext dla prostszego dostępu
-    private readonly ApplicationDbContext _context;
-
-    // Zaktualizowany konstruktor
-    public ServiceTasksController(
-        IServiceOrderService orderService,
-        IPartService partService,
-        ServiceTaskMapper mapper,
-        ApplicationDbContext context)
+    // DELETE: ServiceTasks/Delete/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
     {
-        _orderService = orderService;
-        _partService = partService;
-        _mapper = mapper;
-        _context = context;
+        try
+        {
+            var task = await _context.ServiceTasks.FindAsync(id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            var orderId = task.ServiceOrderId;
+
+            _context.ServiceTasks.Remove(task);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Zadanie zostało usunięte!";
+            return RedirectToAction("Details", "ServiceOrders", new { id = orderId });
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = $"Błąd podczas usuwania zadania: {ex.Message}";
+            return RedirectToAction("Index", "ServiceOrders");
+        }
     }
 }
