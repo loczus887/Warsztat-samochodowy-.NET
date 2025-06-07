@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "Raporty";
+}
+<h1>@ViewData["Title"]</h1>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-user"></i> Raport klienta
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Generuj raport kosztów napraw dla wybranego klienta.</p>
+                <div class="btn-group w-100" role="group">
+                    <a asp-action="Customer" class="btn btn-primary">
+                        <i class="fas fa-file-pdf"></i> PDF
+                    </a>
+                    <a asp-action="EmailCustomerReport" class="btn btn-success">
+                        <i class="fas fa-envelope"></i> Email
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-car"></i> Raport pojazdu
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Generuj raport napraw dla wybranego pojazdu.</p>
+                <div class="btn-group w-100" role="group">
+                    <a asp-action="Vehicle" class="btn btn-primary">
+                        <i class="fas fa-file-pdf"></i> PDF
+                    </a>
+                    <a asp-action="EmailVehicleReport" class="btn btn-success">
+                        <i class="fas fa-envelope"></i> Email
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-calendar"></i> Raport miesięczny
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Generuj raport napraw za wybrany miesiąc.</p>
+                    <div class="btn-group w-100" role="group">
+                        <a asp-action="Monthly" class="btn btn-primary">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </a>
+                        <a asp-action="EmailMonthlyReport" class="btn btn-success">
+                            <i class="fas fa-envelope"></i> Email
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="row mt-4">
+    @if (User.IsInRole("Admin") || User.IsInRole("Receptionist"))
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-clipboard-list"></i> Aktywne zlecenia
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Pobierz raport wszystkich aktywnych zleceń.</p>
+                    <div class="btn-group w-100" role="group">
+                        <a asp-action="ActiveOrders" class="btn btn-primary">
+                            <i class="fas fa-download"></i> PDF
+                        </a>
+                        <a asp-action="EmailActiveOrders" class="btn btn-success">
+                            <i class="fas fa-envelope"></i> Email
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
