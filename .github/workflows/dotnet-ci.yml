@@ -1,31 +1,51 @@
-name: .NET CI/CD
+name: .NET CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, master, develop ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, master ]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
-    
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
-
-    - name: Install Identity UI package
-      run: dotnet add ./WorkshopManager/WorkshopManager.csproj package Microsoft.AspNetCore.Identity.UI --version 8.0.5
+        dotnet-version: '8.0.x'
         
     - name: Restore dependencies
-      run: dotnet restore ./WorkshopManager/WorkshopManager.sln
+      run: dotnet restore
       
-    - name: Build
-      run: dotnet build ./WorkshopManager/WorkshopManager.sln --no-restore
+    - name: Build project
+      run: dotnet build --no-restore --configuration Release
       
-    - name: Test
-      run: dotnet test ./WorkshopManager/WorkshopManager.sln --no-build --verbosity normal
+    - name: Run tests
+      run: dotnet test --no-build --configuration Release --verbosity normal
+      
+    - name: Publish application
+      run: dotnet publish --no-build --configuration Release --output ./publish
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: workshop-manager-build
+        path: ./publish
+        retention-days: 30
+
+  deployment-info:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Deployment Status
+      run: |
+        echo "Build completed successfully!"
+        echo "Ready for deployment to production"
+        echo "Workshop Manager CI/CD Pipeline executed"
