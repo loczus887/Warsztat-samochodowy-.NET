@@ -40,22 +40,31 @@ public class ServiceOrdersController : Controller
         DateTime? dateTo,
         string sortBy = "CreatedAt")
     {
+        _logger.LogInformation("Rozpoczęto ładowanie listy zleceń. Parametry: search={Search}, status={Status}, mechanicId={MechanicId}, sortBy={SortBy}",
+            search, status, mechanicId, sortBy);
+
         try
         {
             var user = await _userManager.GetUserAsync(User);
+            _logger.LogInformation("Załadowano użytkownika: {UserId}, Role: {IsInMechanicRole}",
+                user?.Id, User.IsInRole("Mechanic"));
+
             var orders = new List<ServiceOrder>();
 
             if (User.IsInRole("Mechanic"))
             {
                 orders = await _orderService.GetServiceOrdersByMechanicAsync(user.Id);
+                _logger.LogInformation("Załadowano {Count} zleceń dla mechanika {UserId}", orders.Count, user.Id);
             }
             else
             {
                 orders = await _orderService.GetAllServiceOrdersAsync();
+                _logger.LogInformation("Załadowano {Count} wszystkich zleceń", orders.Count);
             }
 
             var orderDtos = orders.Select(o => _mapper.ServiceOrderToDtoWithDetails(o)).ToList();
 
+            // Logowanie filtrów
             if (!string.IsNullOrEmpty(search))
             {
                 orderDtos = orderDtos.Where(o =>
@@ -64,26 +73,31 @@ public class ServiceOrdersController : Controller
                     (!string.IsNullOrEmpty(o.CustomerName) && o.CustomerName.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
                     (!string.IsNullOrEmpty(o.MechanicName) && o.MechanicName.Contains(search, StringComparison.OrdinalIgnoreCase))
                 ).ToList();
+                _logger.LogDebug("Zastosowano filtr wyszukiwania '{Search}', pozostało {Count} zleceń", search, orderDtos.Count);
             }
 
             if (status.HasValue)
             {
                 orderDtos = orderDtos.Where(o => o.Status == status.Value).ToList();
+                _logger.LogDebug("Zastosowano filtr statusu '{Status}', pozostało {Count} zleceń", status.Value, orderDtos.Count);
             }
 
             if (!string.IsNullOrEmpty(mechanicId))
             {
                 orderDtos = orderDtos.Where(o => o.MechanicId == mechanicId).ToList();
+                _logger.LogDebug("Zastosowano filtr mechanika '{MechanicId}', pozostało {Count} zleceń", mechanicId, orderDtos.Count);
             }
 
             if (dateFrom.HasValue)
             {
                 orderDtos = orderDtos.Where(o => o.CreatedAt.Date >= dateFrom.Value.Date).ToList();
+                _logger.LogDebug("Zastosowano filtr daty od '{DateFrom}', pozostało {Count} zleceń", dateFrom.Value, orderDtos.Count);
             }
 
             if (dateTo.HasValue)
             {
                 orderDtos = orderDtos.Where(o => o.CreatedAt.Date <= dateTo.Value.Date).ToList();
+                _logger.LogDebug("Zastosowano filtr daty do '{DateTo}', pozostało {Count} zleceń", dateTo.Value, orderDtos.Count);
             }
 
             orderDtos = sortBy switch
@@ -108,11 +122,13 @@ public class ServiceOrdersController : Controller
             ViewBag.TotalCount = orderDtos.Count();
             ViewBag.CurrentStatus = status;
 
+            _logger.LogInformation("Pomyślnie załadowano {Count} zleceń dla użytkownika {UserId}", orderDtos.Count(), user?.Id);
             return View(orderDtos);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error loading service orders");
+            _logger.LogError(ex, "Błąd podczas ładowania listy zleceń dla użytkownika {UserId}",
+                _userManager.GetUserId(User));
             TempData["ErrorMessage"] = "Wystąpił błąd podczas ładowania zleceń.";
             return View(new List<ServiceOrderDto>());
         }
@@ -120,8 +136,11 @@ public class ServiceOrdersController : Controller
 
     public async Task<IActionResult> Details(int? id)
     {
+        _logger.LogInformation("Rozpoczęto ładowanie szczegółów zlecenia {OrderId}", id);
+
         if (id == null)
         {
+            _logger.LogWarning("Próba dostępu do szczegółów zlecenia bez podania ID");
             return NotFound();
         }
 
@@ -130,15 +149,19 @@ public class ServiceOrdersController : Controller
             var order = await _orderService.GetServiceOrderByIdAsync(id.Value);
             if (order == null)
             {
+                _logger.LogWarning("Nie znaleziono zlecenia o ID {OrderId}", id.Value);
                 return NotFound();
             }
 
             var orderDto = _mapper.ServiceOrderToDtoWithDetails(order);
+            _logger.LogInformation("Pomyślnie załadowano szczegóły zlecenia {OrderId}, Status: {Status}, Koszt: {TotalCost}",
+                order.Id, order.Status, orderDto.TotalCost);
+
             return View(orderDto);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error loading service order {OrderId}", id);
+            _logger.LogError(ex, "Błąd podczas ładowania szczegółów zlecenia {OrderId}", id);
             return NotFound();
         }
     }
@@ -146,6 +169,9 @@ public class ServiceOrdersController : Controller
     [Authorize(Roles = "Admin,Receptionist")]
     public async Task<IActionResult> Create()
     {
+        _logger.LogInformation("Rozpoczęto tworzenie nowego zlecenia przez użytkownika {UserId}",
+            _userManager.GetUserId(User));
+
         await PopulateDropDownLists();
         return View();
     }
@@ -155,6 +181,9 @@ public class ServiceOrdersController : Controller
     [Authorize(Roles = "Admin,Receptionist")]
     public async Task<IActionResult> Create(ServiceOrderDto orderDto)
     {
+        _logger.LogInformation("Próba utworzenia nowego zlecenia. VehicleId: {VehicleId}, MechanicId: {MechanicId}",
+            orderDto.VehicleId, orderDto.MechanicId);
+
         try
         {
             if (ModelState.IsValid)
@@ -164,13 +193,23 @@ public class ServiceOrdersController : Controller
                 order.Status = OrderStatus.New;
 
                 await _orderService.CreateServiceOrderAsync(order);
+
+                _logger.LogInformation("Pomyślnie utworzono zlecenie {OrderId} przez użytkownika {UserId}",
+                    order.Id, _userManager.GetUserId(User));
+
                 TempData["SuccessMessage"] = "Zlecenie zostało pomyślnie utworzone.";
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                _logger.LogWarning("Nieprawidłowe dane w formularzu tworzenia zlecenia. Błędy: {ModelErrors}",
+                    string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)));
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating service order");
+            _logger.LogError(ex, "Błąd podczas tworzenia zlecenia przez użytkownika {UserId}",
+                _userManager.GetUserId(User));
             ModelState.AddModelError("", "Wystąpił błąd podczas tworzenia zlecenia.");
         }
 
@@ -181,8 +220,12 @@ public class ServiceOrdersController : Controller
     [Authorize(Roles = "Admin,Receptionist")]
     public async Task<IActionResult> Edit(int? id)
     {
+        _logger.LogInformation("Rozpoczęto edycję zlecenia {OrderId} przez użytkownika {UserId}",
+            id, _userManager.GetUserId(User));
+
         if (id == null)
         {
+            _logger.LogWarning("Próba edycji zlecenia bez podania ID");
             return NotFound();
         }
 
@@ -191,17 +234,19 @@ public class ServiceOrdersController : Controller
             var order = await _orderService.GetServiceOrderByIdAsync(id.Value);
             if (order == null)
             {
+                _logger.LogWarning("Nie znaleziono zlecenia {OrderId} do edycji", id.Value);
                 return NotFound();
             }
 
             var orderDto = _mapper.ServiceOrderToDtoWithDetails(order);
             await PopulateDropDownLists(order.VehicleId, order.MechanicId);
 
+            _logger.LogInformation("Załadowano formularz edycji zlecenia {OrderId}", order.Id);
             return View(orderDto);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error loading service order {OrderId} for edit", id);
+            _logger.LogError(ex, "Błąd podczas ładowania formularza edycji zlecenia {OrderId}", id);
             return NotFound();
         }
     }
@@ -211,8 +256,12 @@ public class ServiceOrdersController : Controller
     [Authorize(Roles = "Admin,Receptionist")]
     public async Task<IActionResult> Edit(int id, ServiceOrderDto orderDto)
     {
+        _logger.LogInformation("Próba aktualizacji zlecenia {OrderId} przez użytkownika {UserId}",
+            id, _userManager.GetUserId(User));
+
         if (id != orderDto.Id)
         {
+            _logger.LogWarning("Niezgodność ID zlecenia: ścieżka={PathId}, formularz={FormId}", id, orderDto.Id);
             return NotFound();
         }
 
@@ -222,15 +271,27 @@ public class ServiceOrdersController : Controller
             {
                 var order = _mapper.DtoToServiceOrder(orderDto);
                 await _orderService.UpdateServiceOrderAsync(order);
+
+                _logger.LogInformation("Pomyślnie zaktualizowano zlecenie {OrderId} przez użytkownika {UserId}",
+                    id, _userManager.GetUserId(User));
+
                 TempData["SuccessMessage"] = "Zlecenie zostało pomyślnie zaktualizowane.";
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                _logger.LogWarning("Nieprawidłowe dane w formularzu edycji zlecenia {OrderId}. Błędy: {ModelErrors}",
+                    id, string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)));
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating service order {OrderId}", id);
+            _logger.LogError(ex, "Błąd podczas aktualizacji zlecenia {OrderId} przez użytkownika {UserId}",
+                id, _userManager.GetUserId(User));
+
             if (!await ServiceOrderExists(orderDto.Id))
             {
+                _logger.LogWarning("Zlecenie {OrderId} nie istnieje podczas próby aktualizacji", orderDto.Id);
                 return NotFound();
             }
             ModelState.AddModelError("", "Wystąpił błąd podczas aktualizacji zlecenia.");
@@ -244,11 +305,15 @@ public class ServiceOrdersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateStatus(int id, OrderStatus newStatus)
     {
+        _logger.LogInformation("Próba zmiany statusu zlecenia {OrderId} na {NewStatus} przez użytkownika {UserId}",
+            id, newStatus, _userManager.GetUserId(User));
+
         try
         {
             var order = await _orderService.GetServiceOrderByIdAsync(id);
             if (order == null)
             {
+                _logger.LogWarning("Nie znaleziono zlecenia {OrderId} do zmiany statusu", id);
                 return NotFound();
             }
 
@@ -257,17 +322,25 @@ public class ServiceOrdersController : Controller
                 var userId = _userManager.GetUserId(User);
                 if (order.MechanicId != userId)
                 {
+                    _logger.LogWarning("Mechanik {UserId} próbował zmienić status zlecenia {OrderId} przypisanego do innego mechanika {AssignedMechanicId}",
+                        userId, id, order.MechanicId);
                     return Forbid();
                 }
             }
 
+            var oldStatus = order.Status;
             await _orderService.UpdateOrderStatusAsync(id, newStatus);
+
+            _logger.LogInformation("Pomyślnie zmieniono status zlecenia {OrderId} z {OldStatus} na {NewStatus} przez użytkownika {UserId}",
+                id, oldStatus, newStatus, _userManager.GetUserId(User));
+
             TempData["SuccessMessage"] = "Status zlecenia został zaktualizowany.";
             return RedirectToAction(nameof(Details), new { id });
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating status for service order {OrderId}", id);
+            _logger.LogError(ex, "Błąd podczas zmiany statusu zlecenia {OrderId} na {NewStatus} przez użytkownika {UserId}",
+                id, newStatus, _userManager.GetUserId(User));
             TempData["ErrorMessage"] = "Wystąpił błąd podczas aktualizacji statusu.";
             return RedirectToAction(nameof(Details), new { id });
         }
@@ -276,8 +349,12 @@ public class ServiceOrdersController : Controller
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int? id)
     {
+        _logger.LogInformation("Rozpoczęto proces usuwania zlecenia {OrderId} przez użytkownika {UserId}",
+            id, _userManager.GetUserId(User));
+
         if (id == null)
         {
+            _logger.LogWarning("Próba usunięcia zlecenia bez podania ID");
             return NotFound();
         }
 
@@ -286,15 +363,17 @@ public class ServiceOrdersController : Controller
             var order = await _orderService.GetServiceOrderByIdAsync(id.Value);
             if (order == null)
             {
+                _logger.LogWarning("Nie znaleziono zlecenia {OrderId} do usunięcia", id.Value);
                 return NotFound();
             }
 
             var orderDto = _mapper.ServiceOrderToDtoWithDetails(order);
+            _logger.LogInformation("Załadowano formularz potwierdzenia usunięcia zlecenia {OrderId}", order.Id);
             return View(orderDto);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error loading service order {OrderId} for delete", id);
+            _logger.LogError(ex, "Błąd podczas ładowania formularza usunięcia zlecenia {OrderId}", id);
             return NotFound();
         }
     }
@@ -304,14 +383,22 @@ public class ServiceOrdersController : Controller
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
+        _logger.LogInformation("Potwierdzenie usunięcia zlecenia {OrderId} przez użytkownika {UserId}",
+            id, _userManager.GetUserId(User));
+
         try
         {
             await _orderService.DeleteServiceOrderAsync(id);
+
+            _logger.LogInformation("Pomyślnie usunięto zlecenie {OrderId} przez użytkownika {UserId}",
+                id, _userManager.GetUserId(User));
+
             TempData["SuccessMessage"] = "Zlecenie zostało pomyślnie usunięte.";
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error deleting service order {OrderId}", id);
+            _logger.LogError(ex, "Błąd podczas usuwania zlecenia {OrderId} przez użytkownika {UserId}",
+                id, _userManager.GetUserId(User));
             TempData["ErrorMessage"] = "Wystąpił błąd podczas usuwania zlecenia.";
         }
 
@@ -325,8 +412,9 @@ public class ServiceOrdersController : Controller
             var order = await _orderService.GetServiceOrderByIdAsync(id);
             return order != null;
         }
-        catch
+        catch (Exception ex)
         {
+            _logger.LogError(ex, "Błąd podczas sprawdzania istnienia zlecenia {OrderId}", id);
             return false;
         }
     }
@@ -343,10 +431,12 @@ public class ServiceOrdersController : Controller
             ViewBag.StatusOptions = new SelectList(
                 Enum.GetValues<OrderStatus>().Select(s => new { Value = (int)s, Text = GetStatusDisplayName(s) }),
                 "Value", "Text");
+
+            _logger.LogDebug("Załadowano opcje filtrów: {MechanicsCount} mechaników", mechanics.Count());
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error loading filter options");
+            _logger.LogError(ex, "Błąd podczas ładowania opcji filtrów");
             ViewBag.Mechanics = new SelectList(new List<object>(), "Id", "Name");
             ViewBag.StatusOptions = new SelectList(new List<object>(), "Value", "Text");
         }
@@ -369,10 +459,13 @@ public class ServiceOrdersController : Controller
             ViewBag.MechanicId = new SelectList(
                 mechanics.Select(m => new { Id = m.Id, Name = $"{m.FirstName} {m.LastName}" }),
                 "Id", "Name", mechanicId);
+
+            _logger.LogDebug("Załadowano dropdown listy: {VehiclesCount} pojazdów, {MechanicsCount} mechaników",
+                vehicles.Count(), mechanics.Count());
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error loading dropdown lists");
+            _logger.LogError(ex, "Błąd podczas ładowania dropdown list");
             ViewBag.VehicleId = new SelectList(new List<object>(), "Id", "Info");
             ViewBag.MechanicId = new SelectList(new List<object>(), "Id", "Name");
         }

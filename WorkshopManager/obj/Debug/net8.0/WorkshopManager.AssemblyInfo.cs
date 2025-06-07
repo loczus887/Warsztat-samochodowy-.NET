@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WorkshopManager")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a2d5dead9733cb3afcad29e981bf0e6728e2cace")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+90b46f896a39743b0b66fa1881978fac3b19daff")]
 [assembly: System.Reflection.AssemblyProductAttribute("WorkshopManager")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WorkshopManager")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

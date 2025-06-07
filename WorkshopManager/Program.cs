@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WorkshopManager.Data;
 using WorkshopManager.Mappers;
@@ -12,7 +12,53 @@ using NLog;
 using NLog.Web;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+
+// === DODAJ TEN DEBUG NA POCZĄTKU ===
+var currentDirectory = Directory.GetCurrentDirectory();
+var logsPath = Path.Combine(currentDirectory, "logs");
+
+Console.WriteLine($"=== NLOG DEBUG ===");
+Console.WriteLine($"Current Directory: {currentDirectory}");
+Console.WriteLine($"Logs Path: {logsPath}");
+
+// Sprawdź czy folder logs istnieje i utwórz
+try
+{
+    if (!Directory.Exists(logsPath))
+    {
+        Directory.CreateDirectory(logsPath);
+        Console.WriteLine($"Utworzono folder: {logsPath}");
+    }
+    else
+    {
+        Console.WriteLine($"Folder już istnieje: {logsPath}");
+    }
+
+    // Test zapisu pliku
+    var testFile = Path.Combine(logsPath, "test.txt");
+    await File.WriteAllTextAsync(testFile, $"Test zapisu: {DateTime.Now}");
+    Console.WriteLine($"✅ Test zapisu udany: {testFile}");
+
+    // Sprawdź czy plik istnieje
+    if (File.Exists(testFile))
+    {
+        Console.WriteLine($"✅ Plik testowy istnieje, usuwam...");
+        File.Delete(testFile);
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"❌ Błąd uprawnień: {ex.Message}");
+}
+
+// Test NLog
+logger.Info("=== TEST LOGU - START APLIKACJI ===");
+logger.Error("=== TEST LOGU BŁĘDU ===");
+Console.WriteLine("=== Sprawdź czy powyższe logi pojawiły się w pliku ===");
+Console.WriteLine("=== END NLOG DEBUG ===");
+
 logger.Debug("Starting application");
+// === KONIEC DEBUGU ===
 
 try
 {
@@ -42,7 +88,7 @@ try
     // Konfiguracja EmailSettings
     builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
-    // Rejestracja serwis�w
+    // Rejestracja serwisów
     builder.Services.AddScoped<ICustomerService, CustomerService>();
     builder.Services.AddScoped<IVehicleService, VehicleService>();
     builder.Services.AddScoped<IServiceOrderService, ServiceOrderService>();
@@ -75,7 +121,7 @@ try
         {
             Title = "Workshop Manager API",
             Version = "v1",
-            Description = "API dla systemu zarz�dzania warsztatem samochodowym"
+            Description = "API dla systemu zarządzania warsztatem samochodowym"
         });
     });
 
