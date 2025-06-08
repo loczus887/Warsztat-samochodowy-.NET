@@ -1,0 +1,241 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Dashboard Pojazdów";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-car me-2"></i>Dashboard Pojazdów</h1>
+    <div>
+        <a asp-controller="Vehicles" asp-action="Create" class="btn btn-primary me-2">
+            <i class="fas fa-plus"></i> Dodaj pojazd
+        </a>
+        <a asp-controller="Vehicles" asp-action="Index" class="btn btn-outline-secondary">
+            <i class="fas fa-list"></i> Wszystkie pojazdy
+        </a>
+    </div>
+</div>
+
+<!-- Statystyki główne -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h3 class="card-title">@Model.TotalVehicles</h3>
+                        <p class="card-text">Wszystkie pojazdy</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-car fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h3 class="card-title">@Model.VehiclesWithImages</h3>
+                        <p class="card-text">Ze zdjęciami</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-camera fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h3 class="card-title">@Model.VehiclesWithoutImages</h3>
+                        <p class="card-text">Bez zdjęć</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-image fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h3 class="card-title">@Model.VehiclesWithActiveOrders</h3>
+                        <p class="card-text">W serwisie</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-wrench fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Ostatnio dodane pojazdy -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-clock me-2"></i>Ostatnio dodane pojazdy</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.RecentVehicles != null && ((IEnumerable<dynamic>)Model.RecentVehicles).Any())
+                {
+                    <div class="list-group list-group-flush">
+                        @foreach (var vehicle in Model.RecentVehicles)
+                        {
+                            <div class="list-group-item d-flex align-items-center">
+                                <div class="me-3">
+                                    @if (!string.IsNullOrEmpty(vehicle.ImageUrl))
+                                    {
+                                        <img src="@vehicle.ImageUrl" alt="@vehicle.Make @vehicle.Model"
+                                             class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
+                                    }
+                                    else
+                                    {
+                                        <div class="bg-light rounded d-flex align-items-center justify-content-center"
+                                             style="width: 50px; height: 50px;">
+                                            <i class="fas fa-car text-muted"></i>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">@vehicle.Make @vehicle.Model (@vehicle.Year)</h6>
+                                    <small class="text-muted">
+                                        @vehicle.RegistrationNumber
+                                        @if (!string.IsNullOrEmpty(vehicle.VIN))
+                                        {
+                                            <span> • VIN: @vehicle.VIN</span>
+                                        }
+                                    </small>
+                                </div>
+                                <div>
+                                    <a asp-controller="Vehicles" asp-action="Details" asp-route-id="@vehicle.Id"
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted text-center">Brak pojazdów do wyświetlenia</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Pojazdy według marki -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-chart-bar me-2"></i>Pojazdy według marki</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.VehiclesByMake != null && ((IDictionary<string, int>)Model.VehiclesByMake).Any())
+                {
+                    @foreach (var make in Model.VehiclesByMake)
+                    {
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>@make.Key</span>
+                            <div class="d-flex align-items-center">
+                                <div class="progress me-2" style="width: 100px; height: 10px;">
+                                    <div class="progress-bar" role="progressbar"
+                                         style="width: @((double)make.Value / Model.TotalVehicles * 100)%"></div>
+                                </div>
+                                <small class="text-muted">@make.Value</small>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted text-center">Brak danych do wyświetlenia</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pojazdy według roku produkcji -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-calendar-alt me-2"></i>Pojazdy według roku produkcji</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.VehiclesByYear != null && ((IDictionary<int, int>)Model.VehiclesByYear).Any())
+                {
+                    <div class="row">
+                        @foreach (var year in Model.VehiclesByYear)
+                        {
+                            <div class="col-md-2 col-sm-4 col-6 mb-3">
+                                <div class="text-center p-3 border rounded">
+                                    <h4 class="text-primary mb-1">@year.Value</h4>
+                                    <small class="text-muted">@year.Key</small>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted text-center">Brak danych do wyświetlenia</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Szybkie akcje -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-bolt me-2"></i>Szybkie akcje</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <a asp-controller="Vehicles" asp-action="Create" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-plus-circle fa-2x d-block mb-2"></i>
+                            Dodaj nowy pojazd
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <a asp-controller="Vehicles" asp-action="Index" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-list fa-2x d-block mb-2"></i>
+                            Lista wszystkich
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <a asp-controller="ServiceOrders" asp-action="Index" class="btn btn-outline-info w-100">
+                            <i class="fas fa-wrench fa-2x d-block mb-2"></i>
+                            Zlecenia serwisowe
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <a asp-controller="Customers" asp-action="Index" class="btn btn-outline-success w-100">
+                            <i class="fas fa-users fa-2x d-block mb-2"></i>
+                            Właściciele
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

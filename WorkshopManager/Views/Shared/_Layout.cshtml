@@ -8,20 +8,150 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WorkshopManager.styles.css" asp-append-version="true" />
+    <!-- Font Awesome dla ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WorkshopManager</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-wrench me-2"></i>WorkshopManager
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        <!-- Dashboard główny -->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-controller="Dashboard" asp-action="Index">
+                                <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                            </a>
+                        </li>
+
+                        <!-- Menu Pojazdy -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="vehiclesDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-car me-1"></i>Pojazdy
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="vehiclesDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Dashboard" asp-action="Vehicles">
+                                        <i class="fas fa-chart-pie me-2"></i>Dashboard pojazdów
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Vehicles" asp-action="Index">
+                                        <i class="fas fa-list me-2"></i>Lista pojazdów
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Vehicles" asp-action="Create">
+                                        <i class="fas fa-plus me-2"></i>Dodaj pojazd
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- Menu Klienci -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="customersDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-users me-1"></i>Klienci
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="customersDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Customers" asp-action="Index">
+                                        <i class="fas fa-list me-2"></i>Lista klientów
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Customers" asp-action="Create">
+                                        <i class="fas fa-plus me-2"></i>Dodaj klienta
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- Menu Zlecenia -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="ordersDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-clipboard-list me-1"></i>Zlecenia
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="ordersDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="ServiceOrders" asp-action="Index">
+                                        <i class="fas fa-list me-2"></i>Wszystkie zlecenia
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="ServiceOrders" asp-action="Create">
+                                        <i class="fas fa-plus me-2"></i>Nowe zlecenie
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="ServiceTasks" asp-action="Index">
+                                        <i class="fas fa-tasks me-2"></i>Zadania serwisowe
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- Menu Części -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="partsDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-cog me-1"></i>Części
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="partsDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Parts" asp-action="Index">
+                                        <i class="fas fa-list me-2"></i>Magazyn części
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Parts" asp-action="Create">
+                                        <i class="fas fa-plus me-2"></i>Dodaj część
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- Menu Raporty -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="reportsDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-chart-bar me-1"></i>Raporty
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Reports" asp-action="Customer">
+                                        <i class="fas fa-user-chart me-2"></i>Raport klientów
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Reports" asp-action="Monthly">
+                                        <i class="fas fa-calendar me-2"></i>Raport miesięczny
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Reports" asp-action="Vehicle">
+                                        <i class="fas fa-car me-2"></i>Raport pojazdów
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- Privacy (zachowane z oryginalnego menu) -->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <i class="fas fa-shield-alt me-1"></i>Privacy
+                            </a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

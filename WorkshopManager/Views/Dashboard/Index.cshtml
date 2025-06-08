@@ -77,6 +77,52 @@
         }
     </div>
 
+    <!-- NOWY WIERSZ Z KARTĄ POJAZDÓW -->
+    @if (userRole != "Mechanic")
+    {
+        <div class="row mb-4">
+            <div class="col-xl-6 col-md-8">
+                <div class="card bg-gradient-secondary text-white mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h2>@ViewBag.VehiclesCount</h2>
+                                <p class="mb-0">Pojazdy w systemie</p>
+                            </div>
+                            <div class="text-end">
+                                <i class="fas fa-car fa-3x opacity-75"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" asp-controller="Dashboard" asp-action="Vehicles">
+                            <i class="fas fa-chart-pie me-1"></i>Dashboard pojazdów
+                        </a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-4">
+                <div class="card border-0 bg-light">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-muted">
+                            <i class="fas fa-tools me-2"></i>Zarządzanie pojazdami
+                        </h5>
+                        <div class="btn-group-vertical w-100" role="group">
+                            <a asp-controller="Vehicles" asp-action="Index" class="btn btn-outline-primary btn-sm mb-2">
+                                <i class="fas fa-list me-1"></i>Lista pojazdów
+                            </a>
+                            <a asp-controller="Vehicles" asp-action="Create" class="btn btn-outline-success btn-sm">
+                                <i class="fas fa-plus me-1"></i>Dodaj pojazd
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -119,3 +165,20 @@
         </div>
     </div>
 </div>
+
+<!-- DODATKOWE STYLE CSS -->
+<style>
+    .bg-gradient-secondary {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    }
+
+    .opacity-75 {
+        opacity: 0.75;
+    }
+
+    .card:hover {
+        transform: translateY(-2px);
+        transition: transform 0.2s ease-in-out;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+</style>
