@@ -20,16 +20,16 @@ jobs:
         dotnet-version: '8.0.x'
         
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./WorkshopManager/WorkshopManager.csproj
       
     - name: Build project
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build ./WorkshopManager/WorkshopManager.csproj --no-restore --configuration Release
       
     - name: Run tests
-      run: dotnet test --no-build --configuration Release --verbosity normal
+      run: dotnet test ./WorkshopManager/WorkshopManager.csproj --no-build --configuration Release --verbosity normal
       
     - name: Publish application
-      run: dotnet publish --no-build --configuration Release --output ./publish
+      run: dotnet publish ./WorkshopManager/WorkshopManager.csproj --no-build --configuration Release --output ./publish
       
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
