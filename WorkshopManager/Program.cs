@@ -11,7 +11,7 @@ using DinkToPdf.Contracts;
 using NLog;
 using NLog.Web;
 
-var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+var logger = LogManager.Setup().LoadConfigurationFromFile("nlog.config", optional: false).GetCurrentClassLogger();
 
 // === DODAJ TEN DEBUG NA POCZĄTKU ===
 var currentDirectory = Directory.GetCurrentDirectory();
