@@ -106,30 +106,124 @@
             </div>
         </div>
 
-        <!-- Sekcja zadań -->
+        <!-- Sekcja zadań POPRAWIONA -->
         <div class="card mt-4">
-            <div class="card-header">
-                <h5 class="mb-0">Zadania serwisowe</h5>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-tasks me-2"></i>Zadania serwisowe
+                    @if (Model.Tasks != null && Model.Tasks.Any())
+                    {
+                        <span class="badge bg-primary">@Model.Tasks.Count</span>
+                    }
+                </h5>
+                @if (User.IsInRole("Admin") || User.IsInRole("Mechanic"))
+                {
+                    <a asp-controller="ServiceTasks" asp-action="Create" asp-route-orderId="@Model.Id"
+                       class="btn btn-success btn-sm">
+                        <i class="fas fa-plus"></i> Dodaj zadanie
+                    </a>
+                }
             </div>
             <div class="card-body">
-                @if (Model.TaskCount > 0)
+                @if (Model.Tasks != null && Model.Tasks.Any())
                 {
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i>
-                        Zadania będą wyświetlane tutaj (wymaga pełnej implementacji ServiceTasks).
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="50%">Opis zadania</th>
+                                    <th width="25%">Koszt robocizny</th>
+                                    <th width="25%">Akcje</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var task in Model.Tasks)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div style="max-width: 300px;">
+                                                @if (!string.IsNullOrEmpty(task.Description))
+                                                {
+                                                    <span title="@task.Description">
+                                                        @(task.Description.Length > 60 ? task.Description.Substring(0, 60) + "..." : task.Description)
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <em class="text-muted">Brak opisu</em>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <strong class="text-success">@task.LaborCost.ToString("C")</strong>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a asp-controller="ServiceTasks" asp-action="Details" asp-route-id="@task.Id"
+                                                   class="btn btn-outline-info btn-sm" title="Szczegóły zadania">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                @if (User.IsInRole("Admin") || User.IsInRole("Mechanic"))
+                                                {
+                                                    <a asp-controller="ServiceTasks" asp-action="Edit" asp-route-id="@task.Id"
+                                                       class="btn btn-outline-warning btn-sm" title="Edytuj zadanie">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a asp-controller="ServiceTasks" asp-action="AddPart" asp-route-taskId="@task.Id"
+                                                       class="btn btn-outline-success btn-sm" title="Dodaj część">
+                                                        <i class="fas fa-plus"></i>
+                                                    </a>
+                                                    <form asp-controller="ServiceTasks" asp-action="Delete" method="post" class="d-inline">
+                                                        <input type="hidden" name="id" value="@task.Id" />
+                                                        <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                                title="Usuń zadanie"
+                                                                onclick="return confirm('Czy na pewno chcesz usunąć to zadanie?')">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- UPROSZCZONE PODSUMOWANIE bez części -->
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="text-center">
+                                    <h6 class="text-primary mb-1">@Model.Tasks.Sum(t => t.LaborCost).ToString("C")</h6>
+                                    <small class="text-muted">Łączny koszt robocizny</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-center">
+                                    <h6 class="text-info mb-1">@Model.Tasks.Count</h6>
+                                    <small class="text-muted">Liczba zadań</small>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 }
                 else
                 {
-                    <div class="text-center py-3">
-                        <i class="fas fa-tasks fa-2x text-muted mb-2"></i>
-                        <p class="text-muted">Brak zadań serwisowych</p>
+                    <div class="text-center py-5">
+                        <i class="fas fa-tasks fa-4x text-muted mb-3"></i>
+                        <h5>Brak zadań serwisowych</h5>
+                        <p class="text-muted">To zlecenie nie ma jeszcze żadnych zadań serwisowych.</p>
                         @if (User.IsInRole("Admin") || User.IsInRole("Mechanic"))
                         {
                             <a asp-controller="ServiceTasks" asp-action="Create" asp-route-orderId="@Model.Id"
-                               class="btn btn-primary btn-sm">
+                               class="btn btn-primary">
                                 <i class="fas fa-plus"></i> Dodaj pierwsze zadanie
                             </a>
+                        }
+                        else
+                        {
+                            <p class="text-muted"><small>Skontaktuj się z mechanikiem aby dodać zadania.</small></p>
                         }
                     </div>
                 }
@@ -137,33 +231,65 @@
         </div>
     </div>
 
-    <!-- Panel komentarzy -->
+    <!-- Panel szybkich akcji -->
     <div class="col-md-4">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Komentarze</h5>
+                <h6 class="mb-0">
+                    <i class="fas fa-bolt me-2"></i>Szybkie akcje
+                </h6>
             </div>
             <div class="card-body">
-                <!-- Formularz dodawania komentarza -->
-                <form asp-controller="Comments" asp-action="Create" class="mb-3">
-                    <input type="hidden" name="ServiceOrderId" value="@Model.Id" />
-                    <div class="mb-2">
-                        <textarea name="Content" class="form-control" rows="3"
-                                  placeholder="Dodaj komentarz..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-sm">
-                        <i class="fas fa-comment"></i> Dodaj komentarz
-                    </button>
-                </form>
+                <div class="d-grid gap-2">
+                    @if (User.IsInRole("Admin") || User.IsInRole("Mechanic"))
+                    {
+                        <a asp-controller="ServiceTasks" asp-action="Create" asp-route-orderId="@Model.Id"
+                           class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-plus"></i> Nowe zadanie
+                        </a>
+                    }
 
-                <!-- Lista komentarzy -->
-                <div class="comments-list">
-                    <div class="text-center text-muted">
-                        <i class="fas fa-comments fa-2x mb-2"></i>
-                        <p>Komentarze będą wyświetlane tutaj</p>
-                    </div>
+                    <a asp-controller="ServiceTasks" asp-action="Index"
+                       class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-list"></i> Wszystkie zadania
+                    </a>
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Receptionist"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.Id"
+                           class="btn btn-outline-warning btn-sm">
+                            <i class="fas fa-edit"></i> Edytuj zlecenie
+                        </a>
+                    }
+
+                    <a asp-controller="Vehicles" asp-action="Details" asp-route-id="@Model.VehicleId"
+                       class="btn btn-outline-info btn-sm">
+                        <i class="fas fa-car"></i> Szczegóły pojazdu
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .table th {
+        border-top: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .btn-group .btn {
+        border-radius: 0.25rem;
+        margin-right: 2px;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(0,0,0,0.02);
+    }
+</style>

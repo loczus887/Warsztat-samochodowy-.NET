@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using WorkshopManager.Data;
 using WorkshopManager.DTOs;
 using WorkshopManager.Mappers;
@@ -16,17 +17,85 @@ public class ServiceTasksController : Controller
     private readonly IPartService _partService;
     private readonly ServiceTaskMapper _mapper;
     private readonly ApplicationDbContext _context;
+    private readonly ILogger<ServiceTasksController> _logger;
 
     public ServiceTasksController(
         IServiceOrderService orderService,
         IPartService partService,
         ServiceTaskMapper mapper,
-        ApplicationDbContext context)
+        ApplicationDbContext context,
+        ILogger<ServiceTasksController> logger)
     {
         _orderService = orderService;
         _partService = partService;
         _mapper = mapper;
         _context = context;
+        _logger = logger;
+    }
+
+    // DODANA METODA INDEX - Lista wszystkich zadań serwisowych
+    public async Task<IActionResult> Index(string search = "")
+    {
+        try
+        {
+            var tasks = await _context.ServiceTasks
+                .Include(t => t.ServiceOrder)
+                    .ThenInclude(o => o.Vehicle)
+                        .ThenInclude(v => v.Customer)
+                .Include(t => t.UsedParts)
+                    .ThenInclude(up => up.Part)
+                .OrderByDescending(t => t.Id)
+                .ToListAsync();
+
+            // Wyszukiwanie
+            if (!string.IsNullOrEmpty(search))
+            {
+                tasks = tasks.Where(t =>
+                    t.Description.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    (t.ServiceOrder?.Vehicle?.Make?.Contains(search, StringComparison.OrdinalIgnoreCase) == true) ||
+                    (t.ServiceOrder?.Vehicle?.Model?.Contains(search, StringComparison.OrdinalIgnoreCase) == true) ||
+                    (t.ServiceOrder?.Vehicle?.RegistrationNumber?.Contains(search, StringComparison.OrdinalIgnoreCase) == true)
+                ).ToList();
+            }
+
+            ViewBag.Search = search;
+            ViewBag.TotalCount = tasks.Count;
+
+            return View(tasks);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error loading service tasks");
+            TempData["ErrorMessage"] = "Wystąpił błąd podczas ładowania zadań serwisowych.";
+            return View(new List<ServiceTask>());
+        }
+    }
+
+    // DODANA METODA DETAILS - Szczegóły zadania
+    public async Task<IActionResult> Details(int id)
+    {
+        try
+        {
+            var task = await _context.ServiceTasks
+                .Include(t => t.ServiceOrder)
+                    .ThenInclude(o => o.Vehicle)
+                        .ThenInclude(v => v.Customer)
+                .Include(t => t.UsedParts)
+                    .ThenInclude(up => up.Part)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            return View(task);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error loading service task details {TaskId}", id);
+            return NotFound();
+        }
     }
 
     // GET: ServiceTasks/Create/5 (orderId)
@@ -94,7 +163,7 @@ public class ServiceTasksController : Controller
         catch (Exception ex)
         {
             TempData["ErrorMessage"] = $"Błąd podczas ładowania zadania: {ex.Message}";
-            return RedirectToAction("Index", "ServiceOrders");
+            return RedirectToAction("Index");
         }
     }
 
@@ -125,7 +194,7 @@ public class ServiceTasksController : Controller
                 await _context.SaveChangesAsync();
 
                 TempData["SuccessMessage"] = "Zadanie zostało zaktualizowane!";
-                return RedirectToAction("Details", "ServiceOrders", new { id = task.ServiceOrderId });
+                return RedirectToAction("Index");
             }
         }
         catch (Exception ex)
@@ -158,7 +227,7 @@ public class ServiceTasksController : Controller
         catch (Exception ex)
         {
             TempData["ErrorMessage"] = $"Błąd podczas ładowania części: {ex.Message}";
-            return RedirectToAction("Index", "ServiceOrders");
+            return RedirectToAction("Index");
         }
     }
 
@@ -223,12 +292,12 @@ public class ServiceTasksController : Controller
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "Zadanie zostało usunięte!";
-            return RedirectToAction("Details", "ServiceOrders", new { id = orderId });
+            return RedirectToAction("Index");
         }
         catch (Exception ex)
         {
             TempData["ErrorMessage"] = $"Błąd podczas usuwania zadania: {ex.Message}";
-            return RedirectToAction("Index", "ServiceOrders");
+            return RedirectToAction("Index");
         }
     }
 }

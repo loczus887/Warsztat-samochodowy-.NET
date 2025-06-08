@@ -1,0 +1,280 @@
+﻿@model WorkshopManager.Models.ServiceTask
+
+@{
+    ViewData["Title"] = "Szczegóły zadania";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="fas fa-tasks me-2"></i>Szczegóły zadania #@Model.Id
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <dl class="row">
+                            <dt class="col-sm-3">ID zadania:</dt>
+                            <dd class="col-sm-9"><strong>#@Model.Id</strong></dd>
+
+                            <dt class="col-sm-3">Opis zadania:</dt>
+                            <dd class="col-sm-9">
+                                @if (!string.IsNullOrEmpty(Model.Description))
+                                {
+                                    @Model.Description
+                                }
+                                else
+                                {
+                                    <em class="text-muted">Brak opisu</em>
+                                }
+                            </dd>
+
+                            <dt class="col-sm-3">Koszt robocizny:</dt>
+                            <dd class="col-sm-9">
+                                <strong class="text-success fs-5">@Model.LaborCost.ToString("C")</strong>
+                            </dd>
+
+                            <dt class="col-sm-3">Zlecenie:</dt>
+                            <dd class="col-sm-9">
+                                <a asp-controller="ServiceOrders" asp-action="Details" asp-route-id="@Model.ServiceOrderId"
+                                   class="btn btn-outline-info btn-sm">
+                                    <i class="fas fa-clipboard-list"></i> Zlecenie #@Model.ServiceOrderId
+                                </a>
+                            </dd>
+
+                            @if (Model.ServiceOrder?.Vehicle != null)
+                            {
+                                <dt class="col-sm-3">Pojazd:</dt>
+                                <dd class="col-sm-9">
+                                    <strong>@Model.ServiceOrder.Vehicle.Make @Model.ServiceOrder.Vehicle.Model</strong>
+                                    <br>
+                                    <small class="text-muted">Rejestracja: @Model.ServiceOrder.Vehicle.RegistrationNumber</small>
+                                    @if (!string.IsNullOrEmpty(Model.ServiceOrder.Vehicle.VIN))
+                                    {
+                                        <br>
+                                        <small class="text-muted">VIN: @Model.ServiceOrder.Vehicle.VIN</small>
+                                    }
+                                </dd>
+                            }
+
+                            @if (Model.ServiceOrder?.Vehicle?.Customer != null)
+                            {
+                                <dt class="col-sm-3">Klient:</dt>
+                                <dd class="col-sm-9">
+                                    @Model.ServiceOrder.Vehicle.Customer.FirstName @Model.ServiceOrder.Vehicle.Customer.LastName
+                                    <br>
+                                    <small class="text-muted">
+                                        <i class="fas fa-phone"></i> @Model.ServiceOrder.Vehicle.Customer.PhoneNumber
+                                    </small>
+                                    @if (!string.IsNullOrEmpty(Model.ServiceOrder.Vehicle.Customer.Email))
+                                    {
+                                        <br>
+                                        <small class="text-muted">
+                                            <i class="fas fa-envelope"></i> @Model.ServiceOrder.Vehicle.Customer.Email
+                                        </small>
+                                    }
+                                </dd>
+                            }
+                        </dl>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card bg-light">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-info-circle me-2"></i>Informacje o zadaniu
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="text-center mb-3">
+                                    <div class="display-6 text-primary">@Model.LaborCost.ToString("C")</div>
+                                    <small class="text-muted">Koszt robocizny</small>
+                                </div>
+
+                                @if (Model.UsedParts?.Any() == true)
+                                {
+                                    <div class="alert alert-success">
+                                        <i class="fas fa-cogs"></i>
+                                        <strong>@Model.UsedParts.Count części</strong> użytych w tym zadaniu
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle"></i>
+                                        Brak części przypisanych do tego zadania
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sekcja części -->
+                @if (Model.UsedParts?.Any() == true)
+                {
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h6 class="mb-0">
+                                <i class="fas fa-cogs me-2"></i>Użyte części
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Nazwa części</th>
+                                            <th>Ilość</th>
+                                            <th>Cena jednostkowa</th>
+                                            <th>Koszt łączny</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var usedPart in Model.UsedParts)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @if (usedPart.Part != null)
+                                                    {
+                                                        <strong>@usedPart.Part.Name</strong>
+                                                        @if (!string.IsNullOrEmpty(usedPart.Part.Category))
+                                                        {
+                                                            <br>
+                                                            <small class="text-muted">@usedPart.Part.Category</small>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <em class="text-muted">Nieznana część</em>
+                                                    }
+                                                </td>
+                                                <td>@usedPart.Quantity</td>
+                                                <td>@(usedPart.Part?.UnitPrice.ToString("C") ?? "N/A")</td>
+                                                <td>
+                                                    <strong>@((usedPart.Part?.UnitPrice * usedPart.Quantity ?? 0).ToString("C"))</strong>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="table-light">
+                                            <th colspan="3">Łączny koszt części:</th>
+                                            <th>
+                                                <strong class="text-success">
+                                                    @Model.UsedParts.Sum(up => (up.Part?.UnitPrice ?? 0) * up.Quantity).ToString("C")
+                                                </strong>
+                                            </th>
+                                        </tr>
+                                        <tr class="table-warning">
+                                            <th colspan="3">Koszt robocizny:</th>
+                                            <th><strong>@Model.LaborCost.ToString("C")</strong></th>
+                                        </tr>
+                                        <tr class="table-success">
+                                            <th colspan="3">KOSZT CAŁKOWITY:</th>
+                                            <th>
+                                                <strong class="fs-5">
+                                                    @((Model.LaborCost + Model.UsedParts.Sum(up => (up.Part?.UnitPrice ?? 0) * up.Quantity)).ToString("C"))
+                                                </strong>
+                                            </th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Akcje -->
+                <div class="mt-4 d-flex justify-content-between">
+                    <div>
+                        <a asp-controller="ServiceOrders" asp-action="Details" asp-route-id="@Model.ServiceOrderId"
+                           class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Powrót do zlecenia
+                        </a>
+                        <a asp-action="Index" class="btn btn-outline-secondary ms-2">
+                            <i class="fas fa-list"></i> Wszystkie zadania
+                        </a>
+                    </div>
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Mechanic"))
+                    {
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning me-2">
+                                <i class="fas fa-edit"></i> Edytuj
+                            </a>
+                            @if (Model.UsedParts?.Any() != true)
+                            {
+                                <a asp-action="AddPart" asp-route-taskId="@Model.Id" class="btn btn-success me-2">
+                                    <i class="fas fa-plus"></i> Dodaj część
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-action="AddPart" asp-route-taskId="@Model.Id" class="btn btn-outline-success me-2">
+                                    <i class="fas fa-plus"></i> Dodaj kolejną część
+                                </a>
+                            }
+                            @if (Model.UsedParts?.Any() != true)
+                            {
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                    <i class="fas fa-trash"></i> Usuń
+                                </button>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal usuwania -->
+@if (User.IsInRole("Admin") || User.IsInRole("Mechanic"))
+{
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Potwierdzenie usunięcia</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Czy na pewno chcesz usunąć to zadanie serwisowe?</p>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>Uwaga:</strong> Ta akcja jest nieodwracalna.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                    <form asp-action="Delete" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Usuń zadanie
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .display-6 {
+        font-size: 2rem;
+        font-weight: 600;
+    }
+
+    .card {
+        border: 1px solid #dee2e6;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .table th {
+        border-top: none;
+        font-weight: 600;
+    }
+</style>

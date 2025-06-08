@@ -77,7 +77,8 @@ public class DashboardController : Controller
         }
     }
 
-    // NOWA METODA - Dashboard dla Pojazdów
+    // ZAMIEŃ METODĘ Vehicles() w DashboardController na tę poprawioną wersję:
+
     [Authorize(Roles = "Admin,Receptionist")]
     public async Task<IActionResult> Vehicles()
     {
@@ -88,8 +89,8 @@ public class DashboardController : Controller
             var dashboardData = new
             {
                 TotalVehicles = vehicles.Count,
-                VehiclesWithImages = vehicles.Count(v => !string.IsNullOrEmpty(v.ImageUrl)),
-                VehiclesWithoutImages = vehicles.Count(v => string.IsNullOrEmpty(v.ImageUrl)),
+                VehiclesWithImages = vehicles.Where(v => !string.IsNullOrEmpty(v.ImageUrl)).Count(),
+                VehiclesWithoutImages = vehicles.Where(v => string.IsNullOrEmpty(v.ImageUrl)).Count(),
                 RecentVehicles = vehicles.OrderByDescending(v => v.Id).Take(5).ToList(),
                 VehiclesByYear = vehicles.GroupBy(v => v.Year)
                                        .OrderByDescending(g => g.Key)
@@ -99,10 +100,11 @@ public class DashboardController : Controller
                                        .OrderByDescending(g => g.Count())
                                        .Take(10)
                                        .ToDictionary(g => g.Key, g => g.Count()),
-                VehiclesWithActiveOrders = vehicles.Count(v => v.ServiceOrders.Any(o =>
-                    o.Status == OrderStatus.New || o.Status == OrderStatus.InProgress))
+                VehiclesWithActiveOrders = vehicles.Where(v =>
+                    v.ServiceOrders != null &&
+                    v.ServiceOrders.Any(o => o.Status == OrderStatus.New || o.Status == OrderStatus.InProgress)
+                ).Count()
             };
-
             _logger.LogDebug("Vehicles dashboard initialization completed successfully");
 
             return View(dashboardData);
@@ -111,7 +113,9 @@ public class DashboardController : Controller
         {
             _logger.LogError(ex, "Error occurred while loading vehicles dashboard");
             TempData["ErrorMessage"] = "Wystąpił błąd podczas ładowania dashboardu pojazdów.";
-            return View(new
+
+            // Zwróć pusty model w przypadku błędu
+            var emptyData = new
             {
                 TotalVehicles = 0,
                 VehiclesWithImages = 0,
@@ -120,9 +124,10 @@ public class DashboardController : Controller
                 VehiclesByYear = new Dictionary<int, int>(),
                 VehiclesByMake = new Dictionary<string, int>(),
                 VehiclesWithActiveOrders = 0
-            });
+            };
+
+            return View(emptyData);
         }
     }
-
 
 }

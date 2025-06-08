@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore; // DODANE
+using WorkshopManager.Data; // DODANE
 using WorkshopManager.DTOs;
 using WorkshopManager.Mappers;
 using WorkshopManager.Models;
@@ -17,19 +19,22 @@ public class ServiceOrdersController : Controller
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly ServiceOrderMapper _mapper;
     private readonly ILogger<ServiceOrdersController> _logger;
+    private readonly ApplicationDbContext _context; // DODANE
 
     public ServiceOrdersController(
         IServiceOrderService orderService,
         IVehicleService vehicleService,
         UserManager<ApplicationUser> userManager,
         ServiceOrderMapper mapper,
-        ILogger<ServiceOrdersController> logger)
+        ILogger<ServiceOrdersController> logger,
+        ApplicationDbContext context) // DODANE
     {
         _orderService = orderService;
         _vehicleService = vehicleService;
         _userManager = userManager;
         _mapper = mapper;
         _logger = logger;
+        _context = context; // DODANE
     }
 
     public async Task<IActionResult> Index(
@@ -134,6 +139,7 @@ public class ServiceOrdersController : Controller
         }
     }
 
+    // ZAKTUALIZOWANA METODA Details - UPROSZCZONA
     public async Task<IActionResult> Details(int? id)
     {
         _logger.LogInformation("Rozpoczęto ładowanie szczegółów zlecenia {OrderId}", id);
@@ -154,8 +160,23 @@ public class ServiceOrdersController : Controller
             }
 
             var orderDto = _mapper.ServiceOrderToDtoWithDetails(order);
-            _logger.LogInformation("Pomyślnie załadowano szczegóły zlecenia {OrderId}, Status: {Status}, Koszt: {TotalCost}",
-                order.Id, order.Status, orderDto.TotalCost);
+
+            // DODANE: Załaduj zadania serwisowe dla tego zlecenia
+            var tasks = await _context.ServiceTasks
+                .Where(t => t.ServiceOrderId == id.Value)
+                .ToListAsync();
+
+            // Mapuj zadania do DTO (tylko podstawowe właściwości)
+            orderDto.Tasks = tasks.Select(t => new ServiceTaskDto
+            {
+                Id = t.Id,
+                Description = t.Description,
+                LaborCost = t.LaborCost,
+                ServiceOrderId = t.ServiceOrderId
+            }).ToList();
+
+            _logger.LogInformation("Pomyślnie załadowano szczegóły zlecenia {OrderId}, Status: {Status}, Zadań: {TaskCount}",
+                order.Id, order.Status, orderDto.Tasks.Count);
 
             return View(orderDto);
         }
