@@ -254,7 +254,7 @@ namespace WorkshopManager.Migrations
 
                     b.HasIndex("ServiceOrderId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("WorkshopManager.Models.Customer", b =>
@@ -292,7 +292,7 @@ namespace WorkshopManager.Migrations
                     b.HasIndex("PhoneNumber")
                         .HasDatabaseName("IX_Customers_PhoneNumber");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("WorkshopManager.Models.Part", b =>
@@ -324,7 +324,7 @@ namespace WorkshopManager.Migrations
                     b.HasIndex("Name")
                         .HasDatabaseName("IX_Parts_Name");
 
-                    b.ToTable("Parts", (string)null);
+                    b.ToTable("Parts");
                 });
 
             modelBuilder.Entity("WorkshopManager.Models.ServiceOrder", b =>
@@ -371,7 +371,7 @@ namespace WorkshopManager.Migrations
                     b.HasIndex("Status", "CreatedAt")
                         .HasDatabaseName("IX_ServiceOrders_Status_CreatedAt");
 
-                    b.ToTable("ServiceOrders", (string)null);
+                    b.ToTable("ServiceOrders");
                 });
 
             modelBuilder.Entity("WorkshopManager.Models.ServiceTask", b =>
@@ -398,7 +398,7 @@ namespace WorkshopManager.Migrations
 
                     b.HasIndex("ServiceOrderId");
 
-                    b.ToTable("ServiceTasks", (string)null);
+                    b.ToTable("ServiceTasks");
                 });
 
             modelBuilder.Entity("WorkshopManager.Models.UsedPart", b =>
@@ -424,7 +424,7 @@ namespace WorkshopManager.Migrations
 
                     b.HasIndex("ServiceTaskId");
 
-                    b.ToTable("UsedParts", (string)null);
+                    b.ToTable("UsedParts");
                 });
 
             modelBuilder.Entity("WorkshopManager.Models.Vehicle", b =>
@@ -473,7 +473,7 @@ namespace WorkshopManager.Migrations
                     b.HasIndex("VIN")
                         .HasDatabaseName("IX_Vehicles_VIN");
 
-                    b.ToTable("Vehicles", (string)null);
+                    b.ToTable("Vehicles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
