@@ -51,6 +51,7 @@ public class VehiclesController : Controller
             }
 
             ViewBag.Search = search;
+            _logger.LogDebug("Vehicles list loaded successfully");
             return View(vehicleDtos);
         }
         catch (Exception ex)
@@ -122,6 +123,7 @@ public class VehiclesController : Controller
                 await _vehicleService.CreateVehicleAsync(vehicle);
 
                 TempData["SuccessMessage"] = "Pojazd został pomyślnie dodany.";
+                _logger.LogDebug("Vehicle created successfully");
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -275,6 +277,8 @@ public class VehiclesController : Controller
 
                 await _vehicleService.DeleteVehicleAsync(id);
                 TempData["SuccessMessage"] = "Pojazd został pomyślnie usunięty.";
+
+                _logger.LogDebug("Vehicle deleted successfully");
             }
         }
         catch (Exception ex)

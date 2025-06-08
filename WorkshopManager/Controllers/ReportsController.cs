@@ -57,7 +57,7 @@ public class ReportsController : Controller
 
             var customer = await _customerService.GetCustomerByIdAsync(customerId);
             var fileName = $"raport_klienta_{customer.LastName}_{customer.FirstName}_{DateTime.Now:yyyyMMdd}.pdf";
-
+ 
             return File(reportData, "application/pdf", fileName);
         }
         catch (Exception ex)

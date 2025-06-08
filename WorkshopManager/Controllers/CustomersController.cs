@@ -53,6 +53,7 @@ public class CustomersController : Controller
             ViewBag.SortBy = sortBy;
             ViewBag.TotalCount = customerDtos.Count();
 
+            _logger.LogDebug("Customers list loaded successfully");
             return View(customerDtos);
         }
         catch (Exception ex)
@@ -122,6 +123,7 @@ public class CustomersController : Controller
             ModelState.AddModelError("", "Wystąpił błąd podczas dodawania klienta.");
         }
 
+        _logger.LogDebug("Customer created successfully");
         return View(customerDto);
     }
 
@@ -179,6 +181,7 @@ public class CustomersController : Controller
             ModelState.AddModelError("", "Wystąpił błąd podczas aktualizacji klienta.");
         }
 
+        _logger.LogDebug("Customer updated successfully");
         return View(customerDto);
     }
 
@@ -198,6 +201,8 @@ public class CustomersController : Controller
             }
 
             var customerDto = _mapper.CustomerToDto(customer);
+
+            _logger.LogDebug("Customer deleted successfully");
             return View(customerDto);
         }
         catch (Exception ex)

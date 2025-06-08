@@ -65,6 +65,8 @@ public class DashboardController : Controller
                 ViewBag.UserRole = "Mechanic";
             }
 
+            _logger.LogDebug("Dashboard initialization completed successfully");
+
             return View(dashboardData);
         }
         catch (Exception ex)
@@ -74,4 +76,53 @@ public class DashboardController : Controller
             return View();
         }
     }
+
+    // NOWA METODA - Dashboard dla Pojazdów
+    [Authorize(Roles = "Admin,Receptionist")]
+    public async Task<IActionResult> Vehicles()
+    {
+        try
+        {
+            var vehicles = await _vehicleService.GetAllVehiclesAsync();
+
+            var dashboardData = new
+            {
+                TotalVehicles = vehicles.Count,
+                VehiclesWithImages = vehicles.Count(v => !string.IsNullOrEmpty(v.ImageUrl)),
+                VehiclesWithoutImages = vehicles.Count(v => string.IsNullOrEmpty(v.ImageUrl)),
+                RecentVehicles = vehicles.OrderByDescending(v => v.Id).Take(5).ToList(),
+                VehiclesByYear = vehicles.GroupBy(v => v.Year)
+                                       .OrderByDescending(g => g.Key)
+                                       .Take(10)
+                                       .ToDictionary(g => g.Key, g => g.Count()),
+                VehiclesByMake = vehicles.GroupBy(v => v.Make)
+                                       .OrderByDescending(g => g.Count())
+                                       .Take(10)
+                                       .ToDictionary(g => g.Key, g => g.Count()),
+                VehiclesWithActiveOrders = vehicles.Count(v => v.ServiceOrders.Any(o =>
+                    o.Status == OrderStatus.New || o.Status == OrderStatus.InProgress))
+            };
+
+            _logger.LogDebug("Vehicles dashboard initialization completed successfully");
+
+            return View(dashboardData);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error occurred while loading vehicles dashboard");
+            TempData["ErrorMessage"] = "Wystąpił błąd podczas ładowania dashboardu pojazdów.";
+            return View(new
+            {
+                TotalVehicles = 0,
+                VehiclesWithImages = 0,
+                VehiclesWithoutImages = 0,
+                RecentVehicles = new List<Vehicle>(),
+                VehiclesByYear = new Dictionary<int, int>(),
+                VehiclesByMake = new Dictionary<string, int>(),
+                VehiclesWithActiveOrders = 0
+            });
+        }
+    }
+
+
 }
