@@ -50,9 +50,17 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "AutoFixture": {
+              "target": "Package",
+              "version": "[4.18.1, )"
+            },
             "DinkToPdf": {
               "target": "Package",
               "version": "[1.0.8, )"
+            },
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[8.3.0, )"
             },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
@@ -62,9 +70,17 @@
               "target": "Package",
               "version": "[8.0.5, )"
             },
+            "Microsoft.AspNetCore.Mvc.Testing": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
               "target": "Package",
               "version": "[9.0.5, )"
             },
@@ -78,6 +94,10 @@
               "target": "Package",
               "version": "[9.0.5, )"
             },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.20.72, )"
+            },
             "NBomber": {
               "target": "Package",
               "version": "[6.0.2, )"
@@ -89,6 +109,10 @@
             "NLog.Web.AspNetCore": {
               "target": "Package",
               "version": "[5.5.0, )"
+            },
+            "NUnit": {
+              "target": "Package",
+              "version": "[4.3.2, )"
             },
             "Riok.Mapperly": {
               "target": "Package",
