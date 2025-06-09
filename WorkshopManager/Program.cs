@@ -13,7 +13,7 @@ using NLog.Web;
 
 var logger = LogManager.Setup().LoadConfigurationFromFile("nlog.config", optional: false).GetCurrentClassLogger();
 
-// === DODAJ TEN DEBUG NA POCZĄTKU ===
+
 var currentDirectory = Directory.GetCurrentDirectory();
 var logsPath = Path.Combine(currentDirectory, "logs");
 
@@ -37,18 +37,18 @@ try
     // Test zapisu pliku
     var testFile = Path.Combine(logsPath, "test.txt");
     await File.WriteAllTextAsync(testFile, $"Test zapisu: {DateTime.Now}");
-    Console.WriteLine($"✅ Test zapisu udany: {testFile}");
+    Console.WriteLine($"Test zapisu udany: {testFile}");
 
     // Sprawdź czy plik istnieje
     if (File.Exists(testFile))
     {
-        Console.WriteLine($"✅ Plik testowy istnieje, usuwam...");
+        Console.WriteLine($"Plik testowy istnieje, usuwam...");
         File.Delete(testFile);
     }
 }
 catch (Exception ex)
 {
-    Console.WriteLine($"❌ Błąd uprawnień: {ex.Message}");
+    Console.WriteLine($"Błąd uprawnień: {ex.Message}");
 }
 
 // Test NLog
@@ -111,7 +111,7 @@ try
     builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
     // Background Services
-    builder.Services.AddHostedService<DailyReportBackgroundService>();
+    builder.Services.AddHostedService<OpenOrderReportBackgroundService>();
 
     // API Documentation
     builder.Services.AddEndpointsApiExplorer();
