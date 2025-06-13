@@ -44,7 +44,7 @@ public partial class ServiceTaskMapper
         return dto;
     }
 
-    // Alternatywna metoda bez automatycznego mapowania (jeśli nadal są problemy)
+    // Alternatywna metoda bez automatycznego mapowania 
     public ServiceTaskDto ServiceTaskToDtoManual(ServiceTask task)
     {
         var partsCost = CalculatePartsCost(task);

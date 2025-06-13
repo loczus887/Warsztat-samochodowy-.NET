@@ -19,7 +19,7 @@ public class ServiceOrdersController : Controller
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly ServiceOrderMapper _mapper;
     private readonly ILogger<ServiceOrdersController> _logger;
-    private readonly ApplicationDbContext _context; // DODANE
+    private readonly ApplicationDbContext _context; 
 
     public ServiceOrdersController(
         IServiceOrderService orderService,
@@ -27,14 +27,14 @@ public class ServiceOrdersController : Controller
         UserManager<ApplicationUser> userManager,
         ServiceOrderMapper mapper,
         ILogger<ServiceOrdersController> logger,
-        ApplicationDbContext context) // DODANE
+        ApplicationDbContext context) 
     {
         _orderService = orderService;
         _vehicleService = vehicleService;
         _userManager = userManager;
         _mapper = mapper;
         _logger = logger;
-        _context = context; // DODANE
+        _context = context; 
     }
 
     public async Task<IActionResult> Index(
@@ -139,7 +139,6 @@ public class ServiceOrdersController : Controller
         }
     }
 
-    // ZAKTUALIZOWANA METODA Details - UPROSZCZONA
     public async Task<IActionResult> Details(int? id)
     {
         _logger.LogInformation("Rozpoczęto ładowanie szczegółów zlecenia {OrderId}", id);
@@ -161,7 +160,7 @@ public class ServiceOrdersController : Controller
 
             var orderDto = _mapper.ServiceOrderToDtoWithDetails(order);
 
-            // DODANE: Załaduj zadania serwisowe dla tego zlecenia
+            //Załaduj zadania serwisowe dla tego zlecenia
             var tasks = await _context.ServiceTasks
                 .Where(t => t.ServiceOrderId == id.Value)
                 .ToListAsync();

@@ -1,5 +1,4 @@
-﻿// Services/Interfaces/IEmailService.cs
-using WorkshopManager.Models;
+﻿using WorkshopManager.Models;
 
 namespace WorkshopManager.Services.Interfaces;
 

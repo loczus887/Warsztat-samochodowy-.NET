@@ -77,7 +77,6 @@ public class DashboardController : Controller
         }
     }
 
-    // ZAMIEŃ METODĘ Vehicles() w DashboardController na tę poprawioną wersję:
 
     [Authorize(Roles = "Admin,Receptionist")]
     public async Task<IActionResult> Vehicles()

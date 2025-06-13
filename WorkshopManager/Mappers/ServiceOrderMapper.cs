@@ -70,7 +70,7 @@ public partial class ServiceOrderMapper
         return dto;
     }
 
-    // Alternatywna metoda bez automatycznego mapowania (jeśli nadal są problemy)
+    // Alternatywna metoda bez automatycznego mapowania 
     public ServiceOrderDto ServiceOrderToDtoManual(ServiceOrder order)
     {
         return new ServiceOrderDto

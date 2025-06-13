@@ -1,5 +1,4 @@
-﻿// Services/EmailService.cs
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
 using Microsoft.Extensions.Options;
 using WorkshopManager.Models;

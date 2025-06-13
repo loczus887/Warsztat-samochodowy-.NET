@@ -48,7 +48,7 @@ public partial class VehicleMapper
         return dto;
     }
 
-    // Alternatywna metoda bez automatycznego mapowania (jeśli nadal są problemy)
+    // Alternatywna metoda bez automatycznego mapowania 
     public VehicleDto VehicleToDtoManual(Vehicle vehicle)
     {
         return new VehicleDto

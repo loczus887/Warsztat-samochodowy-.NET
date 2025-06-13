@@ -279,8 +279,7 @@ System WorkshopManager",
                 await smtpClient.SendMailAsync(message);
                 _logger.LogInformation($"Report email sent successfully to {adminEmail}");
 
-                // Opcjonalnie: usuń plik PDF po wysłaniu
-                // File.Delete(pdfPath);
+
             }
             catch (Exception ex)
             {

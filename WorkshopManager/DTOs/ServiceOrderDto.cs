@@ -46,7 +46,7 @@ public class ServiceOrderDto
     [Display(Name = "Koszt całkowity")]
     public decimal TotalCost { get; set; }
 
-    // DODANE: Lista zadań serwisowych
+    //Lista zadań serwisowych
     [Display(Name = "Zadania serwisowe")]
     public List<ServiceTaskDto> Tasks { get; set; } = new List<ServiceTaskDto>();
 }

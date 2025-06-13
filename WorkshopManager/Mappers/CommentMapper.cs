@@ -35,7 +35,7 @@ public partial class CommentMapper
         return dto;
     }
 
-    // Alternatywna metoda bez automatycznego mapowania (jeśli nadal są problemy)
+    // Alternatywna metoda bez automatycznego mapowania 
     public CommentDto CommentToDtoManual(Comment comment)
     {
         return new CommentDto

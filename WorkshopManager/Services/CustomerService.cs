@@ -17,7 +17,7 @@ public class CustomerService : ICustomerService
     public async Task<List<Customer>> GetAllCustomersAsync()
     {
         return await _context.Customers
-            .Include(c => c.Vehicles)  // DODANE - załaduje pojazdy!
+            .Include(c => c.Vehicles)  
             .OrderBy(c => c.LastName)
             .ThenBy(c => c.FirstName)
             .ToListAsync();
@@ -36,7 +36,7 @@ public class CustomerService : ICustomerService
             return await GetAllCustomersAsync();
 
         return await _context.Customers
-            .Include(c => c.Vehicles)  // DODANE - załaduje pojazdy też w wyszukiwaniu!
+            .Include(c => c.Vehicles)  
             .Where(c => c.FirstName.Contains(searchTerm) ||
                    c.LastName.Contains(searchTerm) ||
                    c.PhoneNumber.Contains(searchTerm) ||

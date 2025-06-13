@@ -33,7 +33,7 @@ public class ServiceTasksController : Controller
         _logger = logger;
     }
 
-    // DODANA METODA INDEX - Lista wszystkich zadań serwisowych
+    //METODA INDEX - Lista wszystkich zadań serwisowych
     public async Task<IActionResult> Index(string search = "")
     {
         try
@@ -71,7 +71,7 @@ public class ServiceTasksController : Controller
         }
     }
 
-    // DODANA METODA DETAILS - Szczegóły zadania
+    //METODA DETAILS - Szczegóły zadania
     public async Task<IActionResult> Details(int id)
     {
         try

@@ -39,7 +39,7 @@ public partial class UsedPartMapper
         return dto;
     }
 
-    // Alternatywna metoda bez automatycznego mapowania (jeśli nadal są problemy)
+    // Alternatywna metoda bez automatycznego mapowania 
     public UsedPartDto UsedPartToDtoManual(UsedPart usedPart)
     {
         var unitPrice = usedPart.Part?.UnitPrice ?? 0;

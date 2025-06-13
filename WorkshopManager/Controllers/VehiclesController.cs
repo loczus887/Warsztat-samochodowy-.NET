@@ -13,16 +13,16 @@ public class VehiclesController : Controller
 {
     private readonly IVehicleService _vehicleService;
     private readonly ICustomerService _customerService;
-    private readonly IFileUploadService _fileUploadService; // NOWY SERWIS
+    private readonly IFileUploadService _fileUploadService; 
     private readonly VehicleMapper _mapper;
-    private readonly ILogger<VehiclesController> _logger; // DODANE LOGOWANIE
+    private readonly ILogger<VehiclesController> _logger; 
 
     public VehiclesController(
         IVehicleService vehicleService,
         ICustomerService customerService,
-        IFileUploadService fileUploadService, // NOWY PARAMETR
+        IFileUploadService fileUploadService, 
         VehicleMapper mapper,
-        ILogger<VehiclesController> logger) // NOWY PARAMETR
+        ILogger<VehiclesController> logger) 
     {
         _vehicleService = vehicleService;
         _customerService = customerService;

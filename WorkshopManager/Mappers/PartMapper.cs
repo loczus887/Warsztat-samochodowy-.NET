@@ -36,7 +36,7 @@ public partial class PartMapper
         return dto;
     }
 
-    // Alternatywna metoda bez automatycznego mapowania (jeśli nadal są problemy)
+    // Alternatywna metoda bez automatycznego mapowania 
     public PartDto PartToDtoManual(Part part)
     {
         return new PartDto
